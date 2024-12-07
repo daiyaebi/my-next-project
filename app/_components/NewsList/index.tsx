@@ -19,13 +19,23 @@ export default function NewsList({ news }: Props) {
         <li key={article.id} className={styles.list}>
           {/* TODO:別の章で、リンクと正式な画像に差し替えます */}
           <Link href={`/news/${article.id}`} className={styles.link}>
-            <Image
-              className={styles.image}
-              src="/no-image.png"
-              alt="No Image"
-              width={1200}
-              height={630}
-            />
+            {article.thumbnail ? (
+              <Image
+                src={article.thumbnail.url}
+                alt=""
+                className={styles.image}
+                width={article.thumbnail.width}
+                height={article.thumbnail.height}
+              />
+              ) : (
+                <Image
+                  className={styles.image}
+                  alt="No Imege"
+                  width={1200}
+                  height={630}
+                />
+              )
+            }
             <dl className={styles.content}>
               <dt className={styles.title}>{article.title}</dt>
               <dd className={styles.meta}>
