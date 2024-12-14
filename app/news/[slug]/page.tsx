@@ -4,6 +4,7 @@ import Article from "@/app/_components/Article/index";
 import ButtonLink from "@/app/_components/ButtonLink/index";
 import styles from "./page.module.css";
 
+export const revalidate = 0;
 
 type Props = {
     params: {
