@@ -1,8 +1,8 @@
-import Image from 'next/image';
+import Image from '@/node_modules/next/image';
 import Link from '@/node_modules/next/link';
 import styles from './index.module.css';
-import Category from '../Category';
-import Date from '../Date';
+import Category from '../Category/index';
+import Date from '../Date/index';
 import { News } from '@/app/_libs/microcms';
 
 type Props = {
@@ -28,14 +28,15 @@ export default function NewsList({ news }: Props) {
                 height={article.thumbnail.height}
               />
               ) : (
-                <Image
-                  className={styles.image}
-                  alt="No Imege"
-                  width={1200}
-                  height={630}
-                />
+              <Image
+                className={styles.image}
+                src="/no-image.png"
+                alt="No Image"
+                width={1200}
+                height={630}
+              />
               )
-            }
+            };
             <dl className={styles.content}>
               <dt className={styles.title}>{article.title}</dt>
               <dd className={styles.meta}>
