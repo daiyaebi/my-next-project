@@ -1,10 +1,9 @@
-import { createClient } from "@/node_modules/microcms-js-sdk/dist/microcms-js-sdk";
-
+import { createClient } from 'microcms-js-sdk';
 import type {
   MicroCMSQueries,
   MicroCMSImage,
   MicroCMSListContent,
-} from "@/node_modules/microcms-js-sdk/dist/microcms-js-sdk";
+} from 'microcms-js-sdk';
 
 export type Member = {
   name: string;
@@ -14,9 +13,9 @@ export type Member = {
 } & MicroCMSListContent;
 
 export type Category = {
-    name: string;
+  name: string;
 } & MicroCMSListContent;
-  
+
 export type News = {
   title: string;
   description: string;
@@ -25,12 +24,12 @@ export type News = {
   category: Category;
 } & MicroCMSListContent;
 
-if(!process.env.MICROCMS_SERVICE_DOMAIN) {
-  throw new Error("MICROCMS_SERVICE_DOMAIN is required");
+if (!process.env.MICROCMS_SERVICE_DOMAIN) {
+  throw new Error('MICROCMS_SERVICE_DOMAIN is required');
 }
 
-if(!process.env.MICROCMS_API_KEY) {
-  throw new Error("MICROCMS_API_KEY is required");
+if (!process.env.MICROCMS_API_KEY) {
+  throw new Error('MICROCMS_API_KEY is required');
 }
 
 const client = createClient({
@@ -38,50 +37,65 @@ const client = createClient({
   apiKey: process.env.MICROCMS_API_KEY,
 });
 
-export const getMembersList = async (queries? :MicroCMSQueries) => {
-  const listData = await client
-  .getList<Member>({
-    endpoint: "members",
+export const getMembersList = async (queries?: MicroCMSQueries) => {
+  const listData = await client.getList<Member>({
+    endpoint: 'members',
     queries,
   });
-  
   return listData;
 };
 
 export const getNewsList = async (queries?: MicroCMSQueries) => {
-  const listData = await client
-  .getList<News>({
-    endpoint: "news",
+  const listData = await client.getList<News>({
+    endpoint: 'news',
     queries,
-    customRequestInit: {
-      next: {
-        revalidate: queries?.draftKey === undefined ? 60 : 0,
-      }
-    }
   });
   return listData;
 };
 
 export const getNewsDetail = async (
   contentId: string,
-  queries?: MicroCMSQueries 
+  queries?: MicroCMSQueries
 ) => {
   const detailData = await client.getListDetail<News>({
-    endpoint: "news",
+    endpoint: 'news',
     contentId,
     queries,
+    customRequestInit: {
+      next: {
+        revalidate: queries?.draftKey === undefined ? 60 : 0,
+      },
+    },
   });
+
   return detailData;
-}
+};
 
 export const getCategoryDetail = async (
   contentId: string,
-  queries?: MicroCMSQueries,
+  queries?: MicroCMSQueries
 ) => {
   const detailData = await client.getListDetail<Category>({
-    endpoint: "categories",
+    endpoint: 'categories',
     contentId,
     queries,
   });
+
   return detailData;
+};
+
+export const getAllNewsList = async () => {
+  const listData = await client.getAllContents<News>({
+    endpoint: 'news',
+  });
+
+  return listData;
+};
+
+export const getAllCategoryList = async () => {
+  const listData = await client.getAllContents<Category>({
+    endpoint: 'categories',
+  });
+
+  return listData;
 };
