@@ -18,7 +18,7 @@ export default async function Home() {
           <h1 className={styles.title}>Knowledge S</h1>
           <p className={styles.description}>Shopifyで使える便利なKnowledgeを共有</p>
         </div>
-        <Image className={styles.bgimg} src="/background-kinabaru.JPG" alt="" width={4000} height={1200} />
+        <Image className={styles.bgimg} src="/background-kinabaru2.JPG" alt="" width={4000} height={1200} />
       </section>
       <section className={styles.news}>
         <h2 className={styles.newsTitle}>News</h2>
