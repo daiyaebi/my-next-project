@@ -7,15 +7,15 @@ import Header from "./_components/Header/index";
 export const metadata: Metadata = {
   metadataBase: new URL('http://localhost:3000'),
   title: {
-    template: '%s | シンプルなコーポレートサイト',
-    default: 'シンプルなコーポレートサイト',
+    template: '%s | Knowledge S',
+    default: 'Knowledge S',
   },
   description:
-    '「Next.js＋ヘッドレスCMSではじめる！ かんたん・モダンWebサイト制作入門」で作成されるサイトです。',
+    'Knowledge Sは即役に立つShopifyのナレッジ共有サイトです。',
   openGraph: {
-    title: 'シンプルなコーポレートサイト',
+    title: 'Knowledge S',
     description:
-      '「Next.js＋ヘッドレスCMSではじめる！ かんたん・モダンWebサイト制作入門」で作成されるサイトです。',
+      'Knowledge Sは即役に立つShopifyのナレッジ共有サイトです。',
     images: ['/ogp.png'],
   },
   alternates: {
