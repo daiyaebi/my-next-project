@@ -31,6 +31,7 @@ export default function RootLayout({
     <html lang="js">
       <body>
         <Header />
+        <link rel="icon" href="/favicon.ico" />
         {children}
         <Footer />
       </body>
