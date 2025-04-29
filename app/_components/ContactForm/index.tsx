@@ -1,6 +1,6 @@
 "use client";
 
-import { sendGAEvent } from "@next/third-parties/google";
+import { sendGAEvent, sendGTMEvent } from "@next/third-parties/google";
 import { createContactData } from "@/app/_actions/contact";
 import { useFormState } from "react-dom";
 import styles from "./index.module.css";
@@ -14,7 +14,7 @@ export default function ContactForm() {
   const [state, formAction] = useFormState(createContactData, initialState);
   console.log(state);
   const handleSubmit = () => {
-    sendGAEvent({ event: "contact", value: "submit" });
+    sendGTMEvent({ event: "contact", value: "submit" });
   }
   if (state.status === "success") {
     return (
