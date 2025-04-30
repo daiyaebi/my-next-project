@@ -1,3 +1,4 @@
+// GTMPageView.tsx または GoogleTagManager.tsx
 'use client'
 
 import { usePathname, useSearchParams } from 'next/navigation'
@@ -6,17 +7,17 @@ import { sendGTMEvent } from '@next/third-parties/google'
 
 // Propsの型定義
 type GoogleTagManagerProps = {
-    gtmId: string;
-  }
+  gtmId: string;
+}
 
-export default function GTMPageView() {
+export default function GoogleTagManager({ gtmId }: GoogleTagManagerProps) {
   const pathname = usePathname()
   const searchParams = useSearchParams()
 
   useEffect(() => {
-    const url = pathname + (searchParams.toString() ? '?' + searchParams.toString() : '')
-    sendGTMEvent({ event: 'pageview', page_path: url })
-  }, [pathname, searchParams])
+    const page_path = pathname + (searchParams.toString() ? '?' + searchParams.toString() : '')
+    sendGTMEvent({ event: 'pageview', page_path, gtmId })
+  }, [pathname, searchParams, gtmId])
 
   return null
 }
