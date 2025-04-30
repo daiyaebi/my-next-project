@@ -32,7 +32,7 @@ export default function RootLayout({
   return (
     <html lang="js">
       <body>
-        <GoogleTagManager gtmId="GTM-CGCGBXT298" />
+        <GoogleTagManager gtmId="G-CGCGBXT298" />
         <Suspense fallback={null}>
           <GTMPageView />
         </Suspense>
