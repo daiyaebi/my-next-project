@@ -37,7 +37,9 @@ export default function RootLayout({
       </body>
       {/* <GoogleAnalytics gaId="G-CGCGBXT2988" /> */}
       <GoogleTagManager gtmId="GTM-CGCGBXT298" />
-      <GTMPageView />
+      <Suspense fallback={null}>
+        <GTMPageView />
+      </Suspense>
     </html>
   );
 }
