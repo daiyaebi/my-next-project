@@ -5,7 +5,6 @@ import NewsList from "@/app/_components/NewsList/index";
 import ButtonLink from "@/app/_components/ButtonLink/index";
 // import { News } from "@/app/_libs/microcms";
 import { TOP_NEWS_LIMIT } from "./_constants/index";
-import GTMPageView from './_components/GTMPageView/index'
 
 
 export const revalidate = 60;
@@ -15,7 +14,6 @@ export default async function Home() {
   })
   return (
     <>
-      <GTMPageView />
       <section className={styles.top}>
         <div>
           <h1 className={styles.title}>Knowledge <span className={styles.S}>S</span></h1>

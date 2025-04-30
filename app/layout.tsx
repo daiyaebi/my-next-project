@@ -1,5 +1,5 @@
 import "./globals.css";
-import { GoogleAnalytics, GoogleTagManager } from "@next/third-parties/google";
+import { GoogleTagManager } from "@next/third-parties/google";
 import GTMPageView  from "./_components/GTMPageView/index";
 import type { Metadata } from "next";
 import Footer from "./_components/Footer/index";
@@ -32,7 +32,6 @@ export default function RootLayout({
   return (
     <html lang="js">
       <body>
-        {/* <GoogleAnalytics gaId="G-CGCGBXT2988" /> */}
         <GoogleTagManager gtmId="GTM-CGCGBXT298" />
         <Suspense fallback={null}>
           <GTMPageView />
