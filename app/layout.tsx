@@ -1,5 +1,6 @@
 import "./globals.css";
-import { GoogleAnalytics, GoogleTagManager } from "@next/third-parties/google";
+// import { GoogleAnalytics, GoogleTagManager } from "@next/third-parties/google";
+import { GoogleTagManager } from "./_components/GTMPageView";
 import type { Metadata } from "next";
 import Footer from "./_components/Footer/index";
 import Header from "./_components/Header/index";
