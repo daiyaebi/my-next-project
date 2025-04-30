@@ -9,8 +9,8 @@ export default function GTMPageView() {
   const searchParams = useSearchParams()
 
   useEffect(() => {
-    const page_path = pathname + (searchParams.toString() ? '?' + searchParams.toString() : '')
-    sendGTMEvent({ event: 'pageview', page_path })
+    const url = pathname + (searchParams.toString() ? '?' + searchParams.toString() : '')
+    sendGTMEvent({ event: 'pageview', page_path: url })
   }, [pathname, searchParams])
 
   return null
