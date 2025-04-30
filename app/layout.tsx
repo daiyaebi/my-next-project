@@ -4,6 +4,7 @@ import GTMPageView  from "./_components/GTMPageView/index";
 import type { Metadata } from "next";
 import Footer from "./_components/Footer/index";
 import Header from "./_components/Header/index";
+import { Suspense } from "react";
 
 export const metadata: Metadata = {
   metadataBase: new URL('http://localhost:3000'),
