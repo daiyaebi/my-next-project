@@ -2,7 +2,7 @@
 
 import { useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import { callShopify } from '@/_libs/shopify';
+import { callShopify } from '../_libs/shopify';
 
 export default function OnePager() {
   const searchParams = useSearchParams();
