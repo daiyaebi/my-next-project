@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { callShopify } from '@/lib/shopify';
+import { callShopify } from '@/_libs/shopify';
 
 export async function POST(req: NextRequest) {
   const form = await req.formData();
