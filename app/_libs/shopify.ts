@@ -21,7 +21,20 @@ export const callShopify = async (
       body: JSON.stringify({ query, variables }),
     });
   
-    const data = await res.json();
-    return data;
+    const text = await res.text(); // ← JSONの前にテキストとして取得
+
+    if (!res.ok) {
+      console.error('HTTP status error:', res.status, res.statusText);
+      console.error('Response body:', text); // ← ここで内容確認
+      throw new Error(`Shopify API error: ${res.status}`);
+    }
+  
+    try {
+      return JSON.parse(text); // ← テキストからJSONに変換
+    } catch (err) {
+      console.error('Failed to parse JSON:', err);
+      console.error('Raw response:', text);
+      throw err;
+    }
   };
   
