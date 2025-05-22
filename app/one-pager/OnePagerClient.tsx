@@ -11,6 +11,8 @@ export default function OnePagerClient() {
 
   useEffect(() => {
     const fetchProduct = async () => {
+    try{
+      console.log('handle:', handle); // クエリパラメータが取れているか確認
       const res = await callShopify(
         `{
           productByHandle(handle: "${handle}") {
@@ -34,7 +36,11 @@ export default function OnePagerClient() {
           }
         }`
       );
+      console.log('Shopify response:', res); // 結果の中身を確認
       setProduct(res.data.productByHandle);
+    } catch (error) {
+        console.error('Shopify API error:', error);
+      }
     };
 
     if (handle) fetchProduct();
