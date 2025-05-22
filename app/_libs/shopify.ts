@@ -1,40 +1,29 @@
-export const callShopify = async (
-    query: string,
-    variables?: Record<string, any>,
-    storefront = true
-  ) => {
-    const endpoint = storefront
-      ? process.env.SHOPIFY_STOREFRONT_ENDPOINT!
-      : process.env.SHOPIFY_ADMIN_ENDPOINT!;
-    const token = storefront
-      ? process.env.SHOPIFY_STOREFRONT_TOKEN!
-      : process.env.SHOPIFY_ADMIN_TOKEN!;
+export async function callShopify(query: string) {
+    const shop = process.env.NEXT_PUBLIC_SHOPIFY_SHOP;
+    const token = process.env.NEXT_PUBLIC_SHOPIFY_STOREFRONT_API_TOKEN;
+  
+    const endpoint = `https://${shop}.myshopify.com/api/2024-01/graphql.json`;
+  
+    console.log('Calling Shopify endpoint:', endpoint);
+    console.log('Using token:', !!token);
   
     const res = await fetch(endpoint, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        [storefront
-          ? 'X-Shopify-Storefront-Access-Token'
-          : 'X-Shopify-Access-Token']: token,
+        'X-Shopify-Storefront-Access-Token': token!,
       },
-      body: JSON.stringify({ query, variables }),
+      body: JSON.stringify({ query }),
     });
   
-    const text = await res.text(); // ← JSONの前にテキストとして取得
-
+    const text = await res.text();
+    console.log('Response Status:', res.status);
+    console.log('Response Text:', text);
+  
     if (!res.ok) {
-      console.error('HTTP status error:', res.status, res.statusText);
-      console.error('Response body:', text); // ← ここで内容確認
       throw new Error(`Shopify API error: ${res.status}`);
     }
   
-    try {
-      return JSON.parse(text); // ← テキストからJSONに変換
-    } catch (err) {
-      console.error('Failed to parse JSON:', err);
-      console.error('Raw response:', text);
-      throw err;
-    }
-  };
+    return JSON.parse(text);
+  }
   
