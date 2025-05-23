@@ -41,7 +41,7 @@ export async function POST(req: NextRequest) {
         );
       }
   
-      return NextResponse.redirect(cart.checkoutUrl);
+      return NextResponse.json({ checkoutUrl: cart.checkoutUrl });
     } catch (error) {
       return new NextResponse(
         JSON.stringify({ error: 'Internal Server Error', detail: String(error) }),
