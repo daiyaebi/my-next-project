@@ -85,13 +85,96 @@ export default function OnePagerClient() {
       <h1 className="text-2xl font-bold">{product.title}</h1>
       <img src={variant.image.originalSrc} alt={variant.title} className="w-64" />
       <p>{variant.priceV2.amount} {variant.priceV2.currencyCode}</p>
-      <button
-        onClick={handleBuyNow}
-        className="mt-4 px-4 py-2 bg-black text-white rounded"
-        disabled={loading}
-      >
-        {loading ? '処理中...' : '今すぐ購入'}
-      </button>
+    
+      <form onSubmit={handleBuyNow} className="mt-4 space-y-4">
+        <div>
+          <label className="block text-sm font-medium">姓</label>
+          <input
+            type="text"
+            name="lastName"
+            required
+            className="mt-1 block w-full border border-gray-300 rounded p-2"
+          />
+        </div>
+    
+        <div>
+          <label className="block text-sm font-medium">名</label>
+          <input
+            type="text"
+            name="firstName"
+            required
+            className="mt-1 block w-full border border-gray-300 rounded p-2"
+          />
+        </div>
+    
+        <div>
+          <label className="block text-sm font-medium">メールアドレス</label>
+          <input
+            type="email"
+            name="email"
+            required
+            className="mt-1 block w-full border border-gray-300 rounded p-2"
+          />
+        </div>
+    
+        <div>
+          <label className="block text-sm font-medium">電話番号</label>
+          <input
+            type="tel"
+            name="phone"
+            required
+            className="mt-1 block w-full border border-gray-300 rounded p-2"
+          />
+        </div>
+    
+        <div>
+          <label className="block text-sm font-medium">郵便番号</label>
+          <input
+            type="text"
+            name="zip"
+            required
+            className="mt-1 block w-full border border-gray-300 rounded p-2"
+          />
+        </div>
+    
+        <div>
+          <label className="block text-sm font-medium">都道府県</label>
+          <input
+            type="text"
+            name="province"
+            required
+            className="mt-1 block w-full border border-gray-300 rounded p-2"
+          />
+        </div>
+    
+        <div>
+          <label className="block text-sm font-medium">市区町村</label>
+          <input
+            type="text"
+            name="city"
+            required
+            className="mt-1 block w-full border border-gray-300 rounded p-2"
+          />
+        </div>
+    
+        <div>
+          <label className="block text-sm font-medium">番地・建物名</label>
+          <input
+            type="text"
+            name="address1"
+            required
+            className="mt-1 block w-full border border-gray-300 rounded p-2"
+          />
+        </div>
+    
+        <button
+          type="submit"
+          className="w-full py-2 bg-black text-white rounded"
+          disabled={loading}
+        >
+          {loading ? '処理中...' : '今すぐ購入'}
+        </button>
+      </form>
     </main>
   );
 }
