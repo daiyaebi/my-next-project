@@ -1,82 +1,51 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { callShopify } from '../../_libs/shopify';
+import { callShopifyCart } from '../../_libs/shopify';
 
 export async function POST(req: NextRequest) {
-  try {
-    const form = await req.formData();
-    const variantId = form.get('variant_id') as string;
-    const handle = form.get('handle') as string;
-
-    const res = await callShopify(
-      `
-      mutation checkoutCreate($input: CheckoutCreateInput!) {
-        checkoutCreate(input: $input) {
-          checkout {
-            id
-            webUrl
-          }
-          checkoutUserErrors {
-            code
-            message
+    try {
+      const form = await req.formData();
+      const variantId = form.get('variant_id') as string;
+  
+      const res = await callShopifyCart(
+        `
+        mutation cartCreate($input: CartInput!) {
+          cartCreate(input: $input) {
+            cart {
+              id
+              checkoutUrl
+            }
+            userErrors {
+              message
+            }
           }
         }
+      `,
+        {
+          input: {
+            lines: [
+              {
+                merchandiseId: variantId,
+                quantity: 1,
+              },
+            ],
+          },
+        }
+      );
+  
+      const { cart, userErrors } = res.data.cartCreate;
+  
+      if (userErrors?.length > 0) {
+        return new NextResponse(
+          JSON.stringify({ error: 'Cart creation error', messages: userErrors }),
+          { status: 400, headers: { 'Content-Type': 'application/json' } }
+        );
       }
-    `,
-      {
-        input: {
-          lineItems: [{ variantId, quantity: 1 }],
-          customAttributes: [
-            {
-              key: 'source-url',
-              value: `/one-pager?handle=${handle}`,
-            },
-          ],
-        },
-      }
-    );
-
-    const checkoutCreate = res.data?.checkoutCreate;
-
-    if (!checkoutCreate) {
-      console.error('checkoutCreate is null:', res);
+  
+      return NextResponse.redirect(cart.checkoutUrl);
+    } catch (error) {
       return new NextResponse(
-        JSON.stringify({
-          error: 'checkoutCreate returned null',
-          detail: res.errors || 'No error message provided by Shopify',
-        }),
+        JSON.stringify({ error: 'Internal Server Error', detail: String(error) }),
         { status: 500, headers: { 'Content-Type': 'application/json' } }
       );
     }
-
-    const { checkout, checkoutUserErrors } = checkoutCreate;
-
-    if (checkoutUserErrors?.length > 0) {
-      console.error('Shopify Checkout Errors:', checkoutUserErrors);
-      return new NextResponse(
-        JSON.stringify({
-          error: 'Shopify Checkout Error',
-          messages: checkoutUserErrors.map((e: any) => e.message),
-        }),
-        { status: 400, headers: { 'Content-Type': 'application/json' } }
-      );
-    }
-
-    if (!checkout?.webUrl) {
-      console.error('checkout.webUrl is missing:', checkout);
-      return new NextResponse(
-        JSON.stringify({
-          error: 'checkout.webUrl is missing',
-        }),
-        { status: 500, headers: { 'Content-Type': 'application/json' } }
-      );
-    }
-
-    return NextResponse.redirect(checkout.webUrl);
-  } catch (error) {
-    console.error('API Error:', error);
-    return new NextResponse(
-      JSON.stringify({ error: 'Internal Server Error', detail: String(error) }),
-      { status: 500, headers: { 'Content-Type': 'application/json' } }
-    );
   }
-}
