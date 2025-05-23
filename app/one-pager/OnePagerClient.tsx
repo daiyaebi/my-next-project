@@ -2,7 +2,7 @@
 
 import { useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import { callShopify } from '../_libs/shopify';
+import { callShopifyCart } from '../_libs/shopify';
 
 export default function OnePagerClient() {
   const searchParams = useSearchParams();
@@ -13,7 +13,7 @@ export default function OnePagerClient() {
     const fetchProduct = async () => {
     try{
       console.log('handle:', handle); // クエリパラメータが取れているか確認
-      const res = await callShopify(
+      const res = await callShopifyCart(
         `{
           productByHandle(handle: "${handle}") {
             title
