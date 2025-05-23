@@ -1,6 +1,6 @@
 export async function callShopifyCart(query: string, variables?: Record<string, any>) {
-    const shop = process.env.NEXT_PUBLIC_SHOPIFY_SHOP!;
-    const token = process.env.NEXT_PUBLIC_SHOPIFY_STOREFRONT_API_TOKEN!;
+    const shop = process.env.NEXT_PUBLIC_SHOPIFY_STOREFRONT_ENDPOINT!;
+    const token = process.env.NEXT_PUBLIC_SHOPIFY_STOREFRONT_TOKEN!;
   
     const endpoint = `https://${shop}.myshopify.com/api/2024-04/graphql.json`;
   
