@@ -31,16 +31,6 @@ export default function OnePagerClient() {
   const [product, setProduct] = useState<ShopifyProduct | null>(null);
   const [loading, setLoading] = useState(false);
 
-  // 入力値ステート
-  const [lastName, setLastName] = useState('');
-  const [firstName, setFirstName] = useState('');
-  const [email, setEmail] = useState('');
-  const [phone, setPhone] = useState('');
-  const [zip, setZip] = useState('');
-  const [province, setProvince] = useState('');
-  const [city, setCity] = useState('');
-  const [address1, setAddress1] = useState('');
-
   useEffect(() => {
     const fetchProduct = async () => {
       try {
@@ -104,29 +94,6 @@ export default function OnePagerClient() {
         }),
       });
 
-      await fetch('/api/cart/update-buyer-identity', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          cartId,
-          buyerIdentity: {
-            email,
-            phone,
-            deliveryAddressPreferences: [
-              {
-                firstName,
-                lastName,
-                address1,
-                city,
-                province,
-                zip,
-                countryCode: 'JP',
-              },
-            ],
-          },
-        }),
-      });
-
       const checkoutRes = await fetch('/api/cart/get', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -165,7 +132,7 @@ export default function OnePagerClient() {
           />
         </div>
       )}
-      
+
       <p className={styles['product-price']}>
         {variant.priceV2.amount} {variant.priceV2.currencyCode}
       </p>
