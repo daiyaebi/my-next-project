@@ -3,6 +3,7 @@
 import { useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { callShopifyCart } from '../_libs/shopify';
+import styles from './page.module.css';
 
 type ShopifyProduct = {
   title: string;
@@ -152,32 +153,32 @@ export default function OnePagerClient() {
   const variant = product.variants.edges[0].node;
 
   return (
-  　<main className="max-w-md mx-auto p-6 bg-white rounded-xl shadow-md space-y-6">
-  　<h1 className="text-3xl font-semibold text-gray-800 text-center">{product.title}</h1>
-　
-  　{variant.image?.originalSrc && (
-  　  <div className="flex justify-center">
-  　    <img
-  　      src={variant.image.originalSrc}
-  　      alt={`${product.title} の商品画像`}
-  　      className="w-64 h-auto rounded-md shadow-sm"
-  　    />
-  　  </div>
-  　)}
-　
-  　<p className="text-xl text-center text-gray-700">
-  　  {variant.priceV2.amount} {variant.priceV2.currencyCode}
-  　</p>
-　
-  　<form onSubmit={handleBuyNow} className="pt-4">
-  　  <button
-  　    type="submit"
-  　    disabled={loading}
-  　    className="w-full py-3 bg-black text-white text-lg font-medium rounded-lg hover:bg-gray-800 disabled:opacity-50 transition"
-  　  >
-  　    {loading ? '処理中...' : '今すぐ購入'}
-  　  </button>
-  　</form>
-　　</main>
+    <main className={styles['product-detail']}>
+      <h1 className={styles['product-title']}>{product.title}</h1>
+    
+      {variant.image?.originalSrc && (
+        <div className={styles['product-image-wrapper']}>
+          <img
+            src={variant.image.originalSrc}
+            alt={`${product.title} の商品画像`}
+            className={styles['product-image']}
+          />
+        </div>
+      )}
+      
+      <p className={styles['product-price']}>
+        {variant.priceV2.amount} {variant.priceV2.currencyCode}
+      </p>
+      
+      <form onSubmit={handleBuyNow} className={styles['buy-form']}>
+        <button
+          type="submit"
+          disabled={loading}
+          className={styles['buy-button']}
+        >
+          {loading ? '処理中...' : '今すぐ購入'}
+        </button>
+      </form>
+    </main>
   );
 }
