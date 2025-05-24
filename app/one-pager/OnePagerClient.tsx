@@ -152,31 +152,32 @@ export default function OnePagerClient() {
   const variant = product.variants.edges[0].node;
 
   return (
-    <main className="p-8">
-      <h1 className="text-2xl font-bold">{product.title}</h1>
-      {variant.image?.originalSrc && (
-        <img
-          src={variant.image.originalSrc}
-          alt={`${product.title} の商品画像`}
-          className="w-64"
-        />
-      )}
-      <p>{variant.priceV2.amount} {variant.priceV2.currencyCode}</p>
-
-      <form onSubmit={handleBuyNow} className="mt-4 space-y-4">
-        <input required placeholder="姓" value={lastName} onChange={(e) => setLastName(e.target.value)} className="block w-full border rounded p-2" />
-        <input required placeholder="名" value={firstName} onChange={(e) => setFirstName(e.target.value)} className="block w-full border rounded p-2" />
-        <input required type="email" placeholder="メール" value={email} onChange={(e) => setEmail(e.target.value)} className="block w-full border rounded p-2" />
-        <input required type="tel" placeholder="電話番号" value={phone} onChange={(e) => setPhone(e.target.value)} className="block w-full border rounded p-2" />
-        <input required placeholder="郵便番号" pattern="\d{3}-?\d{4}" value={zip} onChange={(e) => setZip(e.target.value)} className="block w-full border rounded p-2" />
-        <input required placeholder="都道府県" value={province} onChange={(e) => setProvince(e.target.value)} className="block w-full border rounded p-2" />
-        <input required placeholder="市区町村" value={city} onChange={(e) => setCity(e.target.value)} className="block w-full border rounded p-2" />
-        <input required placeholder="番地・建物名" value={address1} onChange={(e) => setAddress1(e.target.value)} className="block w-full border rounded p-2" />
-
-        <button type="submit" disabled={loading} className="w-full py-2 bg-black text-white rounded">
-          {loading ? '処理中...' : '今すぐ購入'}
-        </button>
-      </form>
-    </main>
+  　<main className="max-w-md mx-auto p-6 bg-white rounded-xl shadow-md space-y-6">
+  　<h1 className="text-3xl font-semibold text-gray-800 text-center">{product.title}</h1>
+　
+  　{variant.image?.originalSrc && (
+  　  <div className="flex justify-center">
+  　    <img
+  　      src={variant.image.originalSrc}
+  　      alt={`${product.title} の商品画像`}
+  　      className="w-64 h-auto rounded-md shadow-sm"
+  　    />
+  　  </div>
+  　)}
+　
+  　<p className="text-xl text-center text-gray-700">
+  　  {variant.priceV2.amount} {variant.priceV2.currencyCode}
+  　</p>
+　
+  　<form onSubmit={handleBuyNow} className="pt-4">
+  　  <button
+  　    type="submit"
+  　    disabled={loading}
+  　    className="w-full py-3 bg-black text-white text-lg font-medium rounded-lg hover:bg-gray-800 disabled:opacity-50 transition"
+  　  >
+  　    {loading ? '処理中...' : '今すぐ購入'}
+  　  </button>
+  　</form>
+　　</main>
   );
 }
