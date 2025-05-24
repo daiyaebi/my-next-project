@@ -1,12 +1,15 @@
-// Next.js API handler 例
-export async function POST(req: Request) {
+import { NextRequest } from 'next/server';
+
+export async function POST(req: NextRequest) {
+  try {
     const { cartId, buyerIdentity } = await req.json();
-  
+
     const mutation = `
       mutation updateCartBuyerIdentity($cartId: ID!, $buyerIdentity: CartBuyerIdentityInput!) {
         cartBuyerIdentityUpdate(cartId: $cartId, buyerIdentity: $buyerIdentity) {
           cart {
             id
+            checkoutUrl
             buyerIdentity {
               email
               phone
@@ -30,27 +33,32 @@ export async function POST(req: Request) {
         }
       }
     `;
-  
+
+    // 構造の正規化（ネスト不足を修正）
+    const deliveryPref = buyerIdentity.deliveryAddressPreferences?.[0];
     const variables = {
       cartId,
       buyerIdentity: {
-        ...buyerIdentity,
-        deliveryAddressPreferences: [
-          {
-            deliveryAddress: {
-              firstName: buyerIdentity.deliveryAddressPreferences[0].firstName,
-              lastName: buyerIdentity.deliveryAddressPreferences[0].lastName,
-              address1: buyerIdentity.deliveryAddressPreferences[0].address1,
-              city: buyerIdentity.deliveryAddressPreferences[0].city,
-              province: buyerIdentity.deliveryAddressPreferences[0].province,
-              zip: buyerIdentity.deliveryAddressPreferences[0].zip,
-              countryCode: buyerIdentity.deliveryAddressPreferences[0].countryCode,
-            },
-          },
-        ],
+        email: buyerIdentity.email,
+        phone: buyerIdentity.phone,
+        deliveryAddressPreferences: deliveryPref
+          ? [
+              {
+                deliveryAddress: {
+                  firstName: deliveryPref.firstName,
+                  lastName: deliveryPref.lastName,
+                  address1: deliveryPref.address1,
+                  city: deliveryPref.city,
+                  province: deliveryPref.province,
+                  zip: deliveryPref.zip,
+                  countryCode: deliveryPref.countryCode, // e.g., 'JP'
+                },
+              },
+            ]
+          : [],
       },
     };
-  
+
     const res = await fetch(process.env.SHOPIFY_STORE_API_URL!, {
       method: 'POST',
       headers: {
@@ -59,8 +67,17 @@ export async function POST(req: Request) {
       },
       body: JSON.stringify({ query: mutation, variables }),
     });
-  
+
     const data = await res.json();
-    return new Response(JSON.stringify(data), { status: 200 });
+
+    if (data.errors || data.data.cartBuyerIdentityUpdate.userErrors.length > 0) {
+      console.error('GraphQL Errors:', data.errors);
+      console.error('User Errors:', data.data.cartBuyerIdentityUpdate.userErrors);
+    }
+
+    return new Response(JSON.stringify(data.data.cartBuyerIdentityUpdate), { status: 200 });
+  } catch (error) {
+    console.error('API Error:', error);
+    return new Response(JSON.stringify({ error: 'Internal Server Error' }), { status: 500 });
   }
-  
+}
