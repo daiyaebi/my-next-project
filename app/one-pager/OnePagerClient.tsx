@@ -115,7 +115,7 @@ export default function OnePagerClient() {
     }
   };
 
-  if (!product) return <p></p>;
+  if (!product) return <div className={styles['loading-wrapper']}><div className={styles['spinner']} /><span>Loading...</span></div>;
 
   const variant = product.variants.edges[0].node;
 
