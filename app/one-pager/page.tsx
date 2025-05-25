@@ -7,8 +7,9 @@ export default function Page() {
   <>
   <header className={styles['page-title-wrapper']}>
      <h1 className={styles['page-title']}>
-       Shopify Storefront API × Next.js（ヘッドレスコマース）で「今すぐ購入」からチェックアウトにスムーズに遷移するミニアプリ
+       外部CMSの商品紹介画面からShopifyチェックアウトにスムーズに遷移するカスタムアプリ
      </h1>
+     <h2 className={styles['page-title']}>Shopify Storefront API × Next.js（ヘッドレスコマース）</h2>
   </header>
 　<Suspense
   　fallback={
