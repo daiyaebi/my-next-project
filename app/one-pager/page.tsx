@@ -4,7 +4,7 @@ import styles from './page.module.css';
 
 export default function Page() {
   return (
-    <Suspense fallback={<div className={styles['buy-form']}>Loading...</div>}>
+    <Suspense fallback={<div className={styles['loading-wrapper']}><div className={styles['spinner']} /><span>Loading...</span></div>}>
       <OnePagerClient />
     </Suspense>
   );
