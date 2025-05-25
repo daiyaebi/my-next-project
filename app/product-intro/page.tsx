@@ -1,5 +1,5 @@
 import { Suspense } from 'react';
-import productIntroClient from './productIntroClient';
+import ProductIntroClient from './productIntroClient';
 import styles from './page.module.css';
 
 export default function Page() {
@@ -19,7 +19,7 @@ export default function Page() {
     　</div>
   　}
 　>
-  　<productIntroClient />
+  　<ProductIntroClient />
 　</Suspense>
 </>
   );

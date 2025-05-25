@@ -25,7 +25,7 @@ type ShopifyProduct = {
   };
 };
 
-export default function productIntroClient() {
+export default function ProductIntroClient() {
   const searchParams = useSearchParams();
   const handle = searchParams.get('handle');
   const [product, setProduct] = useState<ShopifyProduct | null>(null);
