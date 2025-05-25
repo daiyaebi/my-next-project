@@ -115,7 +115,7 @@ export default function OnePagerClient() {
     }
   };
 
-  if (!product) return <p>Loading...</p>;
+  // if (!product) return <p>Loading...</p>;
 
   const variant = product.variants.edges[0].node;
 
