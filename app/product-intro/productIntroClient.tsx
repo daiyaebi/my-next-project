@@ -25,7 +25,7 @@ type ShopifyProduct = {
   };
 };
 
-export default function OnePagerClient() {
+export default function productIntroClient() {
   const searchParams = useSearchParams();
   const handle = searchParams.get('handle');
   const [product, setProduct] = useState<ShopifyProduct | null>(null);
