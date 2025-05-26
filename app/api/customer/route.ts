@@ -24,11 +24,11 @@ export async function POST(req: NextRequest) {
       }
     `;
 
-    const res = await fetch(`${process.env.SHOPIFY_STORE_DOMAIN}/api/2024-01/graphql.json`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_SHOPIFY_STOREFRONT_ENDPOINT}/api/2024-01/graphql.json`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'X-Shopify-Storefront-Access-Token': process.env.SHOPIFY_STOREFRONT_ACCESS_TOKEN || '',
+        'X-Shopify-Storefront-Access-Token': process.env.NEXT_PUBLIC_SHOPIFY_STOREFRONT_TOKEN || '',
       },
       body: JSON.stringify({
         query,
