@@ -31,6 +31,18 @@ export default function ProductIntroClient() {
   const [product, setProduct] = useState<ShopifyProduct | null>(null);
   const [loading, setLoading] = useState(false);
 
+  const [formData, setFormData] = useState({
+    email: '',
+    phone: '',
+    firstName: '',
+    lastName: '',
+    address1: '',
+    city: '',
+    province: '',
+    zip: '',
+    countryCode: 'JP',
+  });
+
   useEffect(() => {
     const fetchProduct = async () => {
       try {
@@ -67,6 +79,11 @@ export default function ProductIntroClient() {
     if (handle) fetchProduct();
   }, [handle]);
 
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
+  };
+
   const handleBuyNow = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!product) return;
@@ -74,12 +91,14 @@ export default function ProductIntroClient() {
     setLoading(true);
 
     try {
+      // カート作成
       const cartCreateRes = await fetch('/api/cart/create', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
       });
       const { cartId } = await cartCreateRes.json();
 
+      // 商品追加
       await fetch('/api/cart/add-lines', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -94,6 +113,31 @@ export default function ProductIntroClient() {
         }),
       });
 
+      // 購入者情報を付与
+      await fetch('/api/cart/update-buyer-identity', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          cartId,
+          buyerIdentity: {
+            email: formData.email,
+            phone: formData.phone,
+            deliveryAddressPreferences: [
+              {
+                firstName: formData.firstName,
+                lastName: formData.lastName,
+                address1: formData.address1,
+                city: formData.city,
+                province: formData.province,
+                zip: formData.zip,
+                countryCode: formData.countryCode,
+              },
+            ],
+          },
+        }),
+      });
+
+      // チェックアウトURL取得
       const checkoutRes = await fetch('/api/cart/get', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -115,7 +159,12 @@ export default function ProductIntroClient() {
     }
   };
 
-  if (!product) return <div className={styles['loading-wrapper']}><div className={styles['spinner']} /><span>Loading...</span></div>;
+  if (!product) return (
+    <div className={styles['loading-wrapper']}>
+      <div className={styles['spinner']} />
+      <span>Loading...</span>
+    </div>
+  );
 
   const variant = product.variants.edges[0].node;
 
@@ -138,6 +187,15 @@ export default function ProductIntroClient() {
       </p>
       
       <form onSubmit={handleBuyNow} className={styles['buy-form']}>
+        <input name="email" type="email" placeholder="メールアドレス" value={formData.email} onChange={handleInputChange} required />
+        <input name="phone" type="tel" placeholder="電話番号" value={formData.phone} onChange={handleInputChange} />
+        <input name="firstName" placeholder="名" value={formData.firstName} onChange={handleInputChange} />
+        <input name="lastName" placeholder="姓" value={formData.lastName} onChange={handleInputChange} />
+        <input name="address1" placeholder="住所1" value={formData.address1} onChange={handleInputChange} />
+        <input name="city" placeholder="市区町村" value={formData.city} onChange={handleInputChange} />
+        <input name="province" placeholder="都道府県" value={formData.province} onChange={handleInputChange} />
+        <input name="zip" placeholder="郵便番号" value={formData.zip} onChange={handleInputChange} />
+
         <button
           type="submit"
           disabled={loading}
