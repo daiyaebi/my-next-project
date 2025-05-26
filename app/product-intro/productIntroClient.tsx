@@ -30,6 +30,8 @@ export default function ProductIntroClient() {
   const handle = searchParams.get('handle');
   const [product, setProduct] = useState<ShopifyProduct | null>(null);
   const [loading, setLoading] = useState(false);
+  const [customerAccessToken, setCustomerAccessToken] = useState<string | null>(null);
+  const [loginForm, setLoginForm] = useState({ email: '', password: '' });
 
   const [formData, setFormData] = useState({
     email: '',
@@ -84,6 +86,38 @@ export default function ProductIntroClient() {
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
+  const handleLoginInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setLoginForm(prev => ({ ...prev, [name]: value }));
+  };
+
+  const handleCustomerLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    try {
+      const res = await fetch('/api/customer', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email: loginForm.email,
+          password: loginForm.password,
+        }),
+      });
+
+      const data = await res.json();
+
+      if (data.customerAccessToken) {
+        setCustomerAccessToken(data.customerAccessToken);
+        alert('ログイン成功');
+      } else {
+        alert('ログイン失敗: ' + data.error || '不明なエラー');
+      }
+    } catch (err) {
+      console.error('ログインエラー:', err);
+      alert('ログイン処理に失敗しました');
+    }
+  };
+
   const handleBuyNow = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!product) return;
@@ -91,14 +125,12 @@ export default function ProductIntroClient() {
     setLoading(true);
 
     try {
-      // カート作成
       const cartCreateRes = await fetch('/api/cart/create', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
       });
       const { cartId } = await cartCreateRes.json();
 
-      // 商品追加
       await fetch('/api/cart/add-lines', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -113,31 +145,36 @@ export default function ProductIntroClient() {
         }),
       });
 
-      // 購入者情報を付与
+      // 顧客ログイン済みなら customerAccessToken を付ける
+      const buyerIdentity: any = {
+        email: formData.email,
+        phone: formData.phone,
+        deliveryAddressPreferences: [
+          {
+            firstName: formData.firstName,
+            lastName: formData.lastName,
+            address1: formData.address1,
+            city: formData.city,
+            province: formData.province,
+            zip: formData.zip,
+            countryCode: formData.countryCode,
+          },
+        ],
+      };
+
+      if (customerAccessToken) {
+        buyerIdentity.customerAccessToken = customerAccessToken;
+      }
+
       await fetch('/api/cart/update-buyer-identity', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           cartId,
-          buyerIdentity: {
-            email: formData.email,
-            phone: formData.phone,
-            deliveryAddressPreferences: [
-              {
-                firstName: formData.firstName,
-                lastName: formData.lastName,
-                address1: formData.address1,
-                city: formData.city,
-                province: formData.province,
-                zip: formData.zip,
-                countryCode: formData.countryCode,
-              },
-            ],
-          },
+          buyerIdentity,
         }),
       });
 
-      // チェックアウトURL取得
       const checkoutRes = await fetch('/api/cart/get', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -171,21 +208,18 @@ export default function ProductIntroClient() {
   return (
     <main className={styles['product-detail']}>
       <h1 className={styles['product-title']}>{product.title}</h1>
-    
-      {variant.image?.originalSrc && (
-        <div className={styles['product-image-wrapper']}>
-          <img
-            src={variant.image.originalSrc}
-            alt={`${product.title} の商品画像`}
-            className={styles['product-image']}
-          />
-        </div>
+
+      {/* 顧客ログインフォーム */}
+      {!customerAccessToken && (
+        <form onSubmit={handleCustomerLogin} className={styles['buy-form']}>
+          <h2>ログインして購入</h2>
+          <input name="email" type="email" placeholder="メールアドレス" value={loginForm.email} onChange={handleLoginInputChange} required />
+          <input name="password" type="password" placeholder="パスワード" value={loginForm.password} onChange={handleLoginInputChange} required />
+          <button type="submit" className={styles['buy-button']}>ログイン</button>
+        </form>
       )}
 
-      <p className={styles['product-price']}>
-        {variant.priceV2.amount} {variant.priceV2.currencyCode}
-      </p>
-      
+      {/* 既存の購入フォーム（変更なし） */}
       <form onSubmit={handleBuyNow} className={styles['buy-form']}>
         <input name="email" type="email" placeholder="メールアドレス" value={formData.email} onChange={handleInputChange} required />
         <input name="phone" type="tel" placeholder="電話番号" value={formData.phone} onChange={handleInputChange} />
@@ -196,11 +230,7 @@ export default function ProductIntroClient() {
         <input name="province" placeholder="都道府県" value={formData.province} onChange={handleInputChange} />
         <input name="zip" placeholder="郵便番号" value={formData.zip} onChange={handleInputChange} />
 
-        <button
-          type="submit"
-          disabled={loading}
-          className={styles['buy-button']}
-        >
+        <button type="submit" disabled={loading} className={styles['buy-button']}>
           {loading ? '処理中...' : '今すぐ購入'}
         </button>
       </form>
