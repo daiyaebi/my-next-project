@@ -206,5 +206,4 @@ export default function ProductIntroClient() {
       </form>
     </main>
   );
-  
 }
