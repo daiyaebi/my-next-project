@@ -46,6 +46,8 @@ export default function ProductIntroClient() {
   });
 
   useEffect(() => {
+    if (!customerAccessToken || !handle) return;
+
     const fetchProduct = async () => {
       try {
         const query = `
@@ -78,8 +80,8 @@ export default function ProductIntroClient() {
       }
     };
 
-    if (handle) fetchProduct();
-  }, [handle]);
+    fetchProduct();
+  }, [customerAccessToken, handle]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -110,7 +112,7 @@ export default function ProductIntroClient() {
         setCustomerAccessToken(data.customerAccessToken);
         alert('ログイン成功');
       } else {
-        alert('ログイン失敗: ' + data.error || '不明なエラー');
+        alert('ログイン失敗: ' + (data.error || '不明なエラー'));
       }
     } catch (err) {
       console.error('ログインエラー:', err);
@@ -145,7 +147,6 @@ export default function ProductIntroClient() {
         }),
       });
 
-      // 顧客ログイン済みなら customerAccessToken を付ける
       const buyerIdentity: any = {
         email: formData.email,
         phone: formData.phone,
@@ -196,30 +197,36 @@ export default function ProductIntroClient() {
     }
   };
 
-  if (!product) return (
-    <div className={styles['loading-wrapper']}>
-      <div className={styles['spinner']} />
-      <span>Loading...</span>
-    </div>
-  );
-
-  const variant = product.variants.edges[0].node;
-
-  return (
-    <main className={styles['product-detail']}>
-      <h1 className={styles['product-title']}>{product.title}</h1>
-
-      {/* 顧客ログインフォーム */}
-      {!customerAccessToken && (
+  // ログイン前：ログインフォームだけ表示
+  if (!customerAccessToken) {
+    return (
+      <main className={styles['product-detail']}>
         <form onSubmit={handleCustomerLogin} className={styles['buy-form']}>
           <h2>ログインして購入</h2>
           <input name="email" type="email" placeholder="メールアドレス" value={loginForm.email} onChange={handleLoginInputChange} required />
           <input name="password" type="password" placeholder="パスワード" value={loginForm.password} onChange={handleLoginInputChange} required />
           <button type="submit" className={styles['buy-button']}>ログイン</button>
         </form>
-      )}
+      </main>
+    );
+  }
 
-      {/* 既存の購入フォーム（変更なし） */}
+  // ログイン済みだが商品がまだロードされていない
+  if (!product) {
+    return (
+      <div className={styles['loading-wrapper']}>
+        <div className={styles['spinner']} />
+        <span>商品情報を読み込み中...</span>
+      </div>
+    );
+  }
+
+  const variant = product.variants.edges[0].node;
+
+  // ログイン済みかつ商品情報取得済み → 表示
+  return (
+    <main className={styles['product-detail']}>
+      <h1 className={styles['product-title']}>{product.title}</h1>
       <form onSubmit={handleBuyNow} className={styles['buy-form']}>
         <input name="email" type="email" placeholder="メールアドレス" value={formData.email} onChange={handleInputChange} required />
         <input name="phone" type="tel" placeholder="電話番号" value={formData.phone} onChange={handleInputChange} />
