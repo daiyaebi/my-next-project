@@ -236,23 +236,16 @@ export default function ProductIntroClient() {
      />
      
      <input
-       className={styles.input}
-       name="phone"
-       type="tel"
-       placeholder="電話番号（例: 9012345678）"
-       value={formData.phone}
-       onChange={(e) => {
-         const input = e.target.value.replace(/[^0-9]/g, ''); // 数字以外を除去
-         const formatted = `+81${input.startsWith('0') ? input.slice(1) : input}`;
-         handleInputChange({
-           ...e,
-           target: { ...e.target, value: formatted },
-         });
-       }}
-       required
-       pattern="^\+81\d{9,10}$"
-       title="日本の電話番号を+81で入力してください（例: +819012345678）"
-     />
+　　　  className={styles.input}
+　　　  name="phone"
+　　　  type="tel"
+　　　  placeholder="電話番号（例: 09012345678）"
+　　　  value={formData.phone}
+　　　  onChange={handleInputChange}
+　　　  pattern="^0\d{9,10}$"
+　　　  title="電話番号は先頭0から始まる10〜11桁で入力してください（例: 09012345678）"
+　　　  required
+　　　/>
 
         <button type="submit" disabled={loading} className={styles['buy-button']}>
           {loading ? '処理中...' : '今すぐ購入'}
