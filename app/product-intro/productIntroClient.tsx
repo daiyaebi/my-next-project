@@ -219,27 +219,39 @@ export default function ProductIntroClient() {
       {variant.image?.url && (
         <div className={styles['image-wrapper']}>
          <img src={variant.image.url} alt={variant.title} className={styles['product-image']} />
+         <p>価格: {variant.priceV2.amount} {variant.priceV2.currencyCode}</p>
         </div>
       )}
-      <p>価格: {variant.priceV2.amount} {variant.priceV2.currencyCode}</p>
       <form onSubmit={handleBuyNow} className={styles['buy-form']}>
-        <input
-          className={styles.input}
-          name="email"
-          type="email"
-          placeholder="メールアドレス"
-          value={formData.email}
-          onChange={handleInputChange}
-          required
-        />
-        <input
-          className={styles.input}
-          name="phone"
-          type="tel"
-          placeholder="電話番号"
-          value={formData.phone}
-          onChange={handleInputChange}
-        />
+      　<input
+　　　　　  className={styles.input}
+　　　　　  name="email"
+　　　　　  type="email"
+　　　　　  placeholder="メールアドレス"
+　　　　　  value={formData.email}
+　　　　　  onChange={handleInputChange}
+　　　　　  required
+　　　　　  pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
+　　　　　  title="有効なメールアドレスを入力してください"
+　　　　　/>
+　　　　　<input
+　　　　　  className={styles.input}
+　　　　　  name="phone"
+　　　　　  type="tel"
+　　　　　  placeholder="電話番号（例: 9012345678）"
+　　　　　  value={formData.phone}
+　　　　　  onChange={(e) => {
+　　　　　    const input = e.target.value.replace(/[^0-9]/g, ''); // 数字以外を除去
+　　　　　    const formatted = `+81${input.startsWith('0') ? input.slice(1) : input}`;
+　　　　　    handleInputChange({
+　　　　　      ...e,
+　　　　　      target: { ...e.target, value: formatted },
+　　　　　    });
+　　　　　  }}
+　　　　　  required
+　　　　　  pattern="^\+81\d{9,10}$"
+　　　　　  title="日本の電話番号を+81で入力してください（例: +819012345678）"
+　　　　　/>
         <button type="submit" disabled={loading} className={styles['buy-button']}>
           {loading ? '処理中...' : '今すぐ購入'}
         </button>
