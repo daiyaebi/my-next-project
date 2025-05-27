@@ -104,7 +104,6 @@ export default function ProductIntroClient() {
 
       if (data.customerAccessToken) {
         setCustomerAccessToken(data.customerAccessToken);
-        alert('ログイン成功:' + data.customerAccessToken);
       } else {
         alert('ログイン失敗: ' + (data.error || '不明なエラー'));
       }
@@ -218,7 +217,9 @@ export default function ProductIntroClient() {
     <main className={styles['product-detail']}>
       <h1 className={styles['product-title']}>{product.title}</h1>
       {variant.image?.url && (
-        <img src={variant.image.url} alt={variant.title} className={styles['product-image']} />
+        <div className={styles['image-wrapper']}>
+         <img src={variant.image.url} alt={variant.title} className={styles['product-image']} />
+        </div>
       )}
       <p>価格: {variant.priceV2.amount} {variant.priceV2.currencyCode}</p>
       <form onSubmit={handleBuyNow} className={styles['buy-form']}>
