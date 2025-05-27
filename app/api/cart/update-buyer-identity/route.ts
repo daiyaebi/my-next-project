@@ -1,4 +1,5 @@
 import { NextRequest } from 'next/server';
+import { callShopifyCart } from '../../../_libs/shopify'; // 適切なパスに調整してください
 
 export async function POST(req: NextRequest) {
   try {
@@ -13,6 +14,10 @@ export async function POST(req: NextRequest) {
             buyerIdentity {
               email
               phone
+              customer {
+                id
+                email
+              }
               deliveryAddressPreferences {
                 deliveryAddress {
                   firstName
@@ -34,45 +39,45 @@ export async function POST(req: NextRequest) {
       }
     `;
 
-    // 構造の正規化（ネスト不足を修正）
     const deliveryPref = buyerIdentity.deliveryAddressPreferences?.[0];
     const variables = {
       cartId,
       buyerIdentity: {
-        email: buyerIdentity.email,
-        phone: buyerIdentity.phone,
+        email: buyerIdentity.email ?? null,
+        phone: buyerIdentity.phone ?? null,
         deliveryAddressPreferences: deliveryPref
           ? [
               {
                 deliveryAddress: {
-                  firstName: deliveryPref.firstName,
-                  lastName: deliveryPref.lastName,
-                  address1: deliveryPref.address1,
-                  city: deliveryPref.city,
-                  province: deliveryPref.province,
-                  zip: deliveryPref.zip,
-                  countryCode: deliveryPref.countryCode, // e.g., 'JP'
+                  firstName: deliveryPref.firstName ?? '',
+                  lastName: deliveryPref.lastName ?? '',
+                  address1: deliveryPref.address1 ?? '',
+                  city: deliveryPref.city ?? '',
+                  province: deliveryPref.province ?? '',
+                  zip: deliveryPref.zip ?? '',
+                  countryCode: deliveryPref.countryCode ?? 'JP',
                 },
               },
             ]
           : [],
+        ...(buyerIdentity.customerAccessToken
+          ? { customerAccessToken: buyerIdentity.customerAccessToken }
+          : {}),
       },
     };
 
-    const res = await fetch(process.env.SHOPIFY_STORE_API_URL!, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'X-Shopify-Storefront-Access-Token': process.env.SHOPIFY_STOREFRONT_ACCESS_TOKEN!,
-      },
-      body: JSON.stringify({ query: mutation, variables }),
-    });
+    const data = await callShopifyCart(mutation, variables);
 
-    const data = await res.json();
-
-    if (data.errors || data.data.cartBuyerIdentityUpdate.userErrors.length > 0) {
+    if (data.errors || (data.data?.cartBuyerIdentityUpdate?.userErrors.length ?? 0) > 0) {
       console.error('GraphQL Errors:', data.errors);
-      console.error('User Errors:', data.data.cartBuyerIdentityUpdate.userErrors);
+      console.error('User Errors:', data.data?.cartBuyerIdentityUpdate?.userErrors);
+      return new Response(
+        JSON.stringify({
+          errors: data.errors,
+          userErrors: data.data?.cartBuyerIdentityUpdate?.userErrors,
+        }),
+        { status: 400 }
+      );
     }
 
     return new Response(JSON.stringify(data.data.cartBuyerIdentityUpdate), { status: 200 });
