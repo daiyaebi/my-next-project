@@ -236,20 +236,19 @@ export default function ProductIntroClient() {
      />
      
      <input
-　　　  className={styles.input}
-　　　  name="phone"
-　　　  type="tel"
-　　　  placeholder="電話番号（例: 09012345678）"
-　　　  value={formData.phone}
-　　　  onChange={(e) => {
-　　　    const raw = e.target.value.replace(/\D/g, ''); // 数字以外を除去
-　　　    const normalized = raw.startsWith('0') ? raw.replace(/^0/, '+81') : '+81' + raw;
-　　　    setFormData({ ...formData, phone: normalized });
-　　　  }}
-　　　  pattern="^\+81\d{9,10}$"
-　　　  title="090から始まる10〜11桁の電話番号を入力してください"
-　　　  required
-　　　/>
+    className={styles.input}
+    name="phone"
+    type="tel"
+    placeholder="90から始まる番号（例: 9012345678）"
+    value={formData.phone.replace(/^\+81/, '')}
+    onChange={(e) => {
+      const raw = e.target.value.replace(/\D/g, ''); // 数字のみ許容
+      setFormData({ ...formData, phone: `+81${raw}` });
+    }}
+    pattern="^\d{9,10}$"
+    title="90から始まる9〜10桁の電話番号を入力してください"
+    required
+  />
 
         <button type="submit" disabled={loading} className={styles['buy-button']}>
           {loading ? '処理中...' : '今すぐ購入'}
