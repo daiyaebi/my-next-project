@@ -27,13 +27,11 @@ export async function POST(req: NextRequest) {
     { email, password }
     );
 
-    const json = await res.json();
-
-    if (!json || !json.data?.customerAccessTokenCreate) {
+    if (!res || !res.data?.customerAccessTokenCreate) {
       return NextResponse.json({ error: '不正なレスポンス' }, { status: 500 });
     }
 
-    const result = json.data.customerAccessTokenCreate;
+    const result = res.data.customerAccessTokenCreate;
 
     if (result.customerAccessToken) {
       return NextResponse.json({
