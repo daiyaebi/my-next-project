@@ -110,7 +110,7 @@ export default function ProductIntroClient() {
 
       if (data.customerAccessToken) {
         setCustomerAccessToken(data.customerAccessToken);
-        alert('ログイン成功');
+        alert('ログイン成功:' + data.customerAccessToken);
       } else {
         alert('ログイン失敗: ' + (data.error || '不明なエラー'));
       }
