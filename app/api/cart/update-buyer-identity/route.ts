@@ -37,7 +37,8 @@ export async function POST(req: NextRequest) {
         ...(buyerIdentity.customerAccessToken
           ? { customerAccessToken: buyerIdentity.customerAccessToken }
           : {}),
-        deliveryAddress: buyerIdentity.deliveryAddress
+        countryCode: buyerIdentity.countryCode ?? null,
+        address: buyerIdentity.deliveryAddress
           ? {
               firstName: buyerIdentity.deliveryAddress.firstName ?? null,
               lastName: buyerIdentity.deliveryAddress.lastName ?? null,
@@ -45,7 +46,6 @@ export async function POST(req: NextRequest) {
               city: buyerIdentity.deliveryAddress.city ?? null,
               province: buyerIdentity.deliveryAddress.province ?? null,
               zip: buyerIdentity.deliveryAddress.zip ?? null,
-              country: buyerIdentity.deliveryAddress.countryCode ?? null,
             }
           : null,
       },
