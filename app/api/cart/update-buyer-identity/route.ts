@@ -38,7 +38,7 @@ export async function POST(req: NextRequest) {
           ? { customerAccessToken: buyerIdentity.customerAccessToken }
           : {}),
         countryCode: buyerIdentity.countryCode ?? null,
-        address: buyerIdentity.deliveryAddress
+        deliveryAddress: buyerIdentity.deliveryAddress
           ? {
               firstName: buyerIdentity.deliveryAddress.firstName ?? null,
               lastName: buyerIdentity.deliveryAddress.lastName ?? null,
@@ -58,15 +58,13 @@ export async function POST(req: NextRequest) {
     if (data.errors || (data.data?.cartBuyerIdentityUpdate?.userErrors.length ?? 0) > 0) {
       console.error('GraphQL Errors:', data.errors);
       console.error('User Errors:', data.data?.cartBuyerIdentityUpdate?.userErrors);
-
-      // 追加：エラー時のレスポンスボディをログに出す
-      const errorResponse = {
-        errors: data.errors,
-        userErrors: data.data?.cartBuyerIdentityUpdate?.userErrors,
-      };
-      console.error('Response body for client:', JSON.stringify(errorResponse));
-
-      return new Response(JSON.stringify(errorResponse), { status: 400 });
+      return new Response(
+        JSON.stringify({
+          errors: data.errors,
+          userErrors: data.data?.cartBuyerIdentityUpdate?.userErrors,
+        }),
+        { status: 400 }
+      );
     }
 
     return new Response(JSON.stringify(data.data.cartBuyerIdentityUpdate), { status: 200 });
