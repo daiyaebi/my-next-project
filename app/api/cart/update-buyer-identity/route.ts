@@ -18,14 +18,16 @@ export async function POST(req: NextRequest) {
                 id
                 email
               }
-              deliveryAddress {
-                firstName
-                lastName
-                address1
-                city
-                province
-                zip
-                countryCode
+              deliveryAddressPreferences {
+                deliveryAddress {
+                  firstName
+                  lastName
+                  address1
+                  city
+                  province
+                  zip
+                  countryCode
+                }
               }
             }
           }
@@ -37,16 +39,29 @@ export async function POST(req: NextRequest) {
       }
     `;
 
-    // buyerIdentity.deliveryAddressを直接セット
     const variables = {
       cartId,
       buyerIdentity: {
         email: buyerIdentity.email ?? null,
         phone: buyerIdentity.phone ?? null,
-        deliveryAddress: buyerIdentity.deliveryAddress ?? null,
         ...(buyerIdentity.customerAccessToken
           ? { customerAccessToken: buyerIdentity.customerAccessToken }
           : {}),
+        deliveryAddressPreferences: buyerIdentity.deliveryAddress
+          ? [
+              {
+                deliveryAddress: {
+                  firstName: buyerIdentity.deliveryAddress.firstName,
+                  lastName: buyerIdentity.deliveryAddress.lastName,
+                  address1: buyerIdentity.deliveryAddress.address1,
+                  city: buyerIdentity.deliveryAddress.city,
+                  province: buyerIdentity.deliveryAddress.province,
+                  zip: buyerIdentity.deliveryAddress.zip,
+                  countryCode: buyerIdentity.deliveryAddress.countryCode,
+                },
+              },
+            ]
+          : [],
       },
     };
 
