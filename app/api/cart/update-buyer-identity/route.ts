@@ -37,17 +37,7 @@ export async function POST(req: NextRequest) {
         ...(buyerIdentity.customerAccessToken
           ? { customerAccessToken: buyerIdentity.customerAccessToken }
           : {}),
-        countryCode: buyerIdentity.countryCode ?? null,
-        deliveryAddress: buyerIdentity.deliveryAddress
-          ? {
-              firstName: buyerIdentity.deliveryAddress.firstName ?? null,
-              lastName: buyerIdentity.deliveryAddress.lastName ?? null,
-              address1: buyerIdentity.deliveryAddress.address1 ?? null,
-              city: buyerIdentity.deliveryAddress.city ?? null,
-              province: buyerIdentity.deliveryAddress.province ?? null,
-              zip: buyerIdentity.deliveryAddress.zip ?? null,
-            }
-          : null,
+        countryCode: buyerIdentity.countryCode ?? null
       },
     };
 
