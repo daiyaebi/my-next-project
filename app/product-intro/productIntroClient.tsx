@@ -192,7 +192,8 @@ export default function ProductIntroClient() {
       const { checkoutUrl } = await checkoutRes.json();
 
       if (checkoutUrl) {
-        window.location.href = checkoutUrl;
+        console.log(checkoutUrl);
+        // window.location.href = checkoutUrl;
       } else {
         throw new Error('チェックアウトURL取得失敗');
       }
