@@ -1,4 +1,3 @@
-// app/api/customer/route.ts
 import { NextRequest, NextResponse } from 'next/server';
 import { callShopifyCart } from '../../_libs/shopify';
 
@@ -10,7 +9,8 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'メールアドレスとパスワードが必要です' }, { status: 400 });
     }
 
-    const res = await callShopifyCart(`
+    const json = await callShopifyCart(
+      `
       mutation customerAccessTokenCreate($input: CustomerAccessTokenCreateInput!) {
         customerAccessTokenCreate(input: $input) {
           customerAccessToken {
@@ -24,14 +24,14 @@ export async function POST(req: NextRequest) {
         }
       }
     `,
-    { email, password }
+      { input: { email, password } }
     );
 
-    if (!res || !res.data?.customerAccessTokenCreate) {
+    const result = json?.data?.customerAccessTokenCreate;
+
+    if (!result) {
       return NextResponse.json({ error: '不正なレスポンス' }, { status: 500 });
     }
-
-    const result = res.data.customerAccessTokenCreate;
 
     if (result.customerAccessToken) {
       return NextResponse.json({
