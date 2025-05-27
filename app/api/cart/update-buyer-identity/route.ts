@@ -3,7 +3,17 @@ import { callShopifyCart } from '../../../_libs/shopify';
 
 export async function POST(req: NextRequest) {
   try {
-    const { cartId, buyerIdentity } = await req.json();
+    const body = await req.json();
+    console.log('Request body:', JSON.stringify(body));
+
+    const { cartId, buyerIdentity } = body;
+
+    if (!cartId) {
+      return new Response(JSON.stringify({ error: 'cartId is required' }), { status: 400 });
+    }
+    if (!buyerIdentity) {
+      return new Response(JSON.stringify({ error: 'buyerIdentity is required' }), { status: 400 });
+    }
 
     const mutation = `
       mutation updateCartBuyerIdentity($cartId: ID!, $buyerIdentity: CartBuyerIdentityInput!) {
@@ -43,7 +53,7 @@ export async function POST(req: NextRequest) {
 
     const data = await callShopifyCart(mutation, variables);
 
-    console.error('Full response data:', data);
+    console.log('Full response data:', JSON.stringify(data));
 
     if (data.errors || (data.data?.cartBuyerIdentityUpdate?.userErrors.length ?? 0) > 0) {
       console.error('GraphQL Errors:', data.errors);
