@@ -36,13 +36,7 @@ export default function ProductIntroClient() {
   const [formData, setFormData] = useState({
     email: '',
     phone: '',
-    firstName: '',
-    lastName: '',
-    address1: '',
-    city: '',
-    province: '',
-    zip: '',
-    countryCode: 'JP',
+    countryCode: 'JP'
   });
 
   useEffect(() => {
@@ -155,16 +149,7 @@ export default function ProductIntroClient() {
       // buyerIdentity の配送先はオブジェクト形式（配列ではない）
       const buyerIdentity: any = {
         email: formData.email,
-        phone: formData.phone,
-        deliveryAddress: {
-          firstName: formData.firstName,
-          lastName: formData.lastName,
-          address1: formData.address1,
-          city: formData.city,
-          province: formData.province,
-          zip: formData.zip,
-          country: formData.countryCode,
-        },
+        phone: formData.phone
       };
 
       if (customerAccessToken) {
@@ -253,54 +238,6 @@ export default function ProductIntroClient() {
           placeholder="電話番号"
           value={formData.phone}
           onChange={handleInputChange}
-        />
-        <input
-          className={styles.input}
-          name="firstName"
-          placeholder="名"
-          value={formData.firstName}
-          onChange={handleInputChange}
-          required
-        />
-        <input
-          className={styles.input}
-          name="lastName"
-          placeholder="姓"
-          value={formData.lastName}
-          onChange={handleInputChange}
-          required
-        />
-        <input
-          className={styles.input}
-          name="address1"
-          placeholder="住所1"
-          value={formData.address1}
-          onChange={handleInputChange}
-          required
-        />
-        <input
-          className={styles.input}
-          name="city"
-          placeholder="市区町村"
-          value={formData.city}
-          onChange={handleInputChange}
-          required
-        />
-        <input
-          className={styles.input}
-          name="province"
-          placeholder="都道府県"
-          value={formData.province}
-          onChange={handleInputChange}
-          required
-        />
-        <input
-          className={styles.input}
-          name="zip"
-          placeholder="郵便番号"
-          value={formData.zip}
-          onChange={handleInputChange}
-          required
         />
         <button type="submit" disabled={loading} className={styles['buy-button']}>
           {loading ? '処理中...' : '今すぐ購入'}
