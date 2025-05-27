@@ -166,6 +166,7 @@ export default function ProductIntroClient() {
 
       if (customerAccessToken) {
         buyerIdentity.customerAccessToken = customerAccessToken;
+        console.log(buyerIdentity.customerAccessToken);
       }
 
       // buyerIdentity 更新
