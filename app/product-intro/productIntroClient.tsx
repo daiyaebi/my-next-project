@@ -241,9 +241,13 @@ export default function ProductIntroClient() {
 　　　  type="tel"
 　　　  placeholder="電話番号（例: 09012345678）"
 　　　  value={formData.phone}
-　　　  onChange={handleInputChange}
-　　　  pattern="^0\d{9,10}$"
-　　　  title="電話番号は先頭0から始まる10〜11桁で入力してください（例: 09012345678）"
+　　　  onChange={(e) => {
+　　　    const raw = e.target.value.replace(/\D/g, ''); // 数字以外を除去
+　　　    const normalized = raw.startsWith('0') ? raw.replace(/^0/, '+81') : '+81' + raw;
+　　　    setFormData({ ...formData, phone: normalized });
+　　　  }}
+　　　  pattern="^\+81\d{9,10}$"
+　　　  title="090から始まる10〜11桁の電話番号を入力してください"
 　　　  required
 　　　/>
 
