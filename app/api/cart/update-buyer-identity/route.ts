@@ -18,16 +18,14 @@ export async function POST(req: NextRequest) {
                 id
                 email
               }
-              deliveryAddressPreferences {
-                deliveryAddress {
-                  firstName
-                  lastName
-                  address1
-                  city
-                  province
-                  zip
-                  countryCode
-                }
+              deliveryAddress {
+                firstName
+                lastName
+                address1
+                city
+                province
+                zip
+                country
               }
             }
           }
@@ -39,6 +37,8 @@ export async function POST(req: NextRequest) {
       }
     `;
 
+    // deliveryAddressPreferences → deliveryAddress に修正し、
+    // countryCode を country に変換
     const variables = {
       cartId,
       buyerIdentity: {
@@ -47,21 +47,17 @@ export async function POST(req: NextRequest) {
         ...(buyerIdentity.customerAccessToken
           ? { customerAccessToken: buyerIdentity.customerAccessToken }
           : {}),
-        deliveryAddressPreferences: buyerIdentity.deliveryAddress
-          ? [
-              {
-                deliveryAddress: {
-                  firstName: buyerIdentity.deliveryAddress.firstName,
-                  lastName: buyerIdentity.deliveryAddress.lastName,
-                  address1: buyerIdentity.deliveryAddress.address1,
-                  city: buyerIdentity.deliveryAddress.city,
-                  province: buyerIdentity.deliveryAddress.province,
-                  zip: buyerIdentity.deliveryAddress.zip,
-                  countryCode: buyerIdentity.deliveryAddress.countryCode,
-                },
-              },
-            ]
-          : [],
+        deliveryAddress: buyerIdentity.deliveryAddress
+          ? {
+              firstName: buyerIdentity.deliveryAddress.firstName ?? null,
+              lastName: buyerIdentity.deliveryAddress.lastName ?? null,
+              address1: buyerIdentity.deliveryAddress.address1 ?? null,
+              city: buyerIdentity.deliveryAddress.city ?? null,
+              province: buyerIdentity.deliveryAddress.province ?? null,
+              zip: buyerIdentity.deliveryAddress.zip ?? null,
+              country: buyerIdentity.deliveryAddress.countryCode ?? null,
+            }
+          : null,
       },
     };
 
