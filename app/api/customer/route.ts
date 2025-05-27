@@ -1,5 +1,6 @@
 // app/api/customer/route.ts
 import { NextRequest, NextResponse } from 'next/server';
+import { callShopifyCart } from '../../_libs/shopify';
 
 export async function POST(req: NextRequest) {
   try {
@@ -9,7 +10,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'メールアドレスとパスワードが必要です' }, { status: 400 });
     }
 
-    const query = `
+    const res = await callShopifyCart(`
       mutation customerAccessTokenCreate($input: CustomerAccessTokenCreateInput!) {
         customerAccessTokenCreate(input: $input) {
           customerAccessToken {
@@ -22,21 +23,9 @@ export async function POST(req: NextRequest) {
           }
         }
       }
-    `;
-
-    const res = await fetch(`${process.env.NEXT_PUBLIC_SHOPIFY_STOREFRONT_ENDPOINT}/api/2024-01/graphql.json`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'X-Shopify-Storefront-Access-Token': process.env.NEXT_PUBLIC_SHOPIFY_STOREFRONT_TOKEN || '',
-      },
-      body: JSON.stringify({
-        query,
-        variables: {
-          input: { email, password },
-        },
-      }),
-    });
+    `,
+    { email, password }
+    );
 
     const json = await res.json();
 
