@@ -1,5 +1,5 @@
 import { NextRequest } from 'next/server';
-import { callShopifyCart } from '../../../_libs/shopify'; // 適切なパスに調整してください
+import { callShopifyCart } from '../../../_libs/shopify';
 
 export async function POST(req: NextRequest) {
   try {
@@ -18,16 +18,14 @@ export async function POST(req: NextRequest) {
                 id
                 email
               }
-              deliveryAddressPreferences {
-                deliveryAddress {
-                  firstName
-                  lastName
-                  address1
-                  city
-                  province
-                  zip
-                  countryCode
-                }
+              deliveryAddress {
+                firstName
+                lastName
+                address1
+                city
+                province
+                zip
+                countryCode
               }
             }
           }
@@ -39,27 +37,13 @@ export async function POST(req: NextRequest) {
       }
     `;
 
-    const deliveryPref = buyerIdentity.deliveryAddressPreferences?.[0];
+    // buyerIdentity.deliveryAddressを直接セット
     const variables = {
       cartId,
       buyerIdentity: {
         email: buyerIdentity.email ?? null,
         phone: buyerIdentity.phone ?? null,
-        deliveryAddressPreferences: deliveryPref
-          ? [
-              {
-                deliveryAddress: {
-                  firstName: deliveryPref.firstName ?? '',
-                  lastName: deliveryPref.lastName ?? '',
-                  address1: deliveryPref.address1 ?? '',
-                  city: deliveryPref.city ?? '',
-                  province: deliveryPref.province ?? '',
-                  zip: deliveryPref.zip ?? '',
-                  countryCode: deliveryPref.countryCode ?? 'JP',
-                },
-              },
-            ]
-          : [],
+        deliveryAddress: buyerIdentity.deliveryAddress ?? null,
         ...(buyerIdentity.customerAccessToken
           ? { customerAccessToken: buyerIdentity.customerAccessToken }
           : {}),
