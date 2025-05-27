@@ -131,6 +131,9 @@ export default function ProductIntroClient() {
       const cartCreateRes = await fetch('/api/cart/create', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          customerAccessToken,
+        }),
       });
       const { cartId } = await cartCreateRes.json();
 
