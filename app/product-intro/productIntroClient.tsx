@@ -197,117 +197,46 @@ export default function ProductIntroClient() {
     }
   };
 
-  // ログイン前：ログインフォームだけ表示
   if (!customerAccessToken) {
     return (
-<main className={styles['product-detail']}>
-  <h1 className={styles['product-title']}>{product.title}</h1>
+      <main className={styles['product-detail']}>
+        <form onSubmit={handleCustomerLogin} className={styles['buy-form']}>
+          <h2>ログインして購入</h2>
+          <input className={styles.input} name="email" type="email" placeholder="メールアドレス" value={loginForm.email} onChange={handleLoginInputChange} required />
+          <input className={styles.input} name="password" type="password" placeholder="パスワード" value={loginForm.password} onChange={handleLoginInputChange} required />
+          <button type="submit" className={styles['buy-button']}>ログイン</button>
+        </form>
+      </main>
+    );
+  }
 
-  {/* 商品画像表示 */}
-  {variant.image?.originalSrc && (
-    <img
-      src={variant.image.originalSrc}
-      alt={variant.title}
-      className={styles['product-image']}
-    />
-  )}
+  if (!product) {
+    return (
+      <div className={styles['loading-wrapper']}>
+        <div className={styles['spinner']} />
+        <span>商品情報を読み込み中...</span>
+      </div>
+    );
+  }
 
-  {/* ログインフォーム */}
-  {!customerAccessToken && (
-    <form onSubmit={handleCustomerLogin} className={styles['buy-form']}>
-      <h2>ログインして購入</h2>
-      <input
-        name="email"
-        type="email"
-        placeholder="メールアドレス"
-        value={loginForm.email}
-        onChange={handleLoginInputChange}
-        required
-        className={styles['input']}
-      />
-      <input
-        name="password"
-        type="password"
-        placeholder="パスワード"
-        value={loginForm.password}
-        onChange={handleLoginInputChange}
-        required
-        className={styles['input']}
-      />
-      <button type="submit" className={styles['buy-button']}>
-        ログイン
-      </button>
-    </form>
-  )}
+  const variant = product.variants.edges[0].node;
 
-  {/* 購入フォーム */}
-  {customerAccessToken && (
-    <form onSubmit={handleBuyNow} className={styles['buy-form']}>
-      <input
-        name="email"
-        type="email"
-        placeholder="メールアドレス"
-        value={formData.email}
-        onChange={handleInputChange}
-        required
-        className={styles['input']}
-      />
-      <input
-        name="phone"
-        type="tel"
-        placeholder="電話番号"
-        value={formData.phone}
-        onChange={handleInputChange}
-        className={styles['input']}
-      />
-      <input
-        name="firstName"
-        placeholder="名"
-        value={formData.firstName}
-        onChange={handleInputChange}
-        className={styles['input']}
-      />
-      <input
-        name="lastName"
-        placeholder="姓"
-        value={formData.lastName}
-        onChange={handleInputChange}
-        className={styles['input']}
-      />
-      <input
-        name="address1"
-        placeholder="住所1"
-        value={formData.address1}
-        onChange={handleInputChange}
-        className={styles['input']}
-      />
-      <input
-        name="city"
-        placeholder="市区町村"
-        value={formData.city}
-        onChange={handleInputChange}
-        className={styles['input']}
-      />
-      <input
-        name="province"
-        placeholder="都道府県"
-        value={formData.province}
-        onChange={handleInputChange}
-        className={styles['input']}
-      />
-      <input
-        name="zip"
-        placeholder="郵便番号"
-        value={formData.zip}
-        onChange={handleInputChange}
-        className={styles['input']}
-      />
-
-      <button type="submit" disabled={loading} className={styles['buy-button']}>
-        {loading ? '処理中...' : '今すぐ購入'}
-      </button>
-    </form>
-  )}
-</main>
+  return (
+    <main className={styles['product-detail']}>
+      <h1 className={styles['product-title']}>{product.title}</h1>
+      <form onSubmit={handleBuyNow} className={styles['buy-form']}>
+        <input className={styles.input} name="email" type="email" placeholder="メールアドレス" value={formData.email} onChange={handleInputChange} required />
+        <input className={styles.input} name="phone" type="tel" placeholder="電話番号" value={formData.phone} onChange={handleInputChange} />
+        <input className={styles.input} name="firstName" placeholder="名" value={formData.firstName} onChange={handleInputChange} />
+        <input className={styles.input} name="lastName" placeholder="姓" value={formData.lastName} onChange={handleInputChange} />
+        <input className={styles.input} name="address1" placeholder="住所1" value={formData.address1} onChange={handleInputChange} />
+        <input className={styles.input} name="city" placeholder="市区町村" value={formData.city} onChange={handleInputChange} />
+        <input className={styles.input} name="province" placeholder="都道府県" value={formData.province} onChange={handleInputChange} />
+        <input className={styles.input} name="zip" placeholder="郵便番号" value={formData.zip} onChange={handleInputChange} />
+        <button type="submit" disabled={loading} className={styles['buy-button']}>
+          {loading ? '処理中...' : '今すぐ購入'}
+        </button>
+      </form>
+    </main>
   );
 }
