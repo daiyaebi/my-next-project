@@ -10,24 +10,6 @@ export async function POST(req: NextRequest) {
         cartBuyerIdentityUpdate(cartId: $cartId, buyerIdentity: $buyerIdentity) {
           cart {
             id
-            checkoutUrl
-            buyerIdentity {
-              email
-              phone
-              customer {
-                id
-                email
-              }
-              deliveryAddress {
-                firstName
-                lastName
-                address1
-                city
-                province
-                zip
-                country
-              }
-            }
           }
           userErrors {
             field
@@ -37,8 +19,6 @@ export async function POST(req: NextRequest) {
       }
     `;
 
-    // deliveryAddressPreferences → deliveryAddress に修正し、
-    // countryCode を country に変換
     const variables = {
       cartId,
       buyerIdentity: {
@@ -62,6 +42,8 @@ export async function POST(req: NextRequest) {
     };
 
     const data = await callShopifyCart(mutation, variables);
+
+    console.error('Full response data:', data);
 
     if (data.errors || (data.data?.cartBuyerIdentityUpdate?.userErrors.length ?? 0) > 0) {
       console.error('GraphQL Errors:', data.errors);
