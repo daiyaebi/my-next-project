@@ -8,12 +8,14 @@ export async function POST(req: NextRequest) {
 
     const { cartId, buyerIdentity, deliveryAddress } = body;
 
-    if (!cartId) {
-      return new Response(JSON.stringify({ error: 'cartId is required' }), { status: 400 });
-    }
-
-    if (!buyerIdentity) {
-      return new Response(JSON.stringify({ error: 'buyerIdentity is required' }), { status: 400 });
+    if (
+        !buyerIdentity ||
+        (typeof buyerIdentity === 'object' &&
+          !buyerIdentity.email &&
+          !buyerIdentity.phone &&
+          !buyerIdentity.customerAccessToken)
+      ) {
+        return new Response(JSON.stringify({ error: 'buyerIdentity is required' }), { status: 400 });
     }
 
     // ✅ Step 1: Update buyerIdentity (email, phone, customerAccessToken)
@@ -32,16 +34,16 @@ export async function POST(req: NextRequest) {
     `;
 
     const buyerVariables = {
-      cartId,
-      buyerIdentity: {
-        email: buyerIdentity.email ?? null,
-        phone: buyerIdentity.phone ?? null,
-        ...(buyerIdentity.customerAccessToken
-          ? { customerAccessToken: buyerIdentity.customerAccessToken }
-          : {}),
-        countryCode: buyerIdentity.countryCode ?? "JP"
-      },
-    };
+        cartId,
+        buyerIdentity: {
+          ...(buyerIdentity.email ? { email: buyerIdentity.email } : {}),
+          ...(buyerIdentity.phone ? { phone: buyerIdentity.phone } : {}),
+          ...(buyerIdentity.customerAccessToken
+            ? { customerAccessToken: buyerIdentity.customerAccessToken }
+            : {}),
+          countryCode: buyerIdentity.countryCode ?? 'JP',
+        },
+      };
 
     const buyerResponse = await callShopifyCart(buyerMutation, buyerVariables);
 
