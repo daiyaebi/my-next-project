@@ -170,6 +170,23 @@ export default function ProductIntroClient() {
           buyerIdentity,
         }),
       });
+      // 配送先住所追加
+      await fetch('/api/cart/add-cart-address', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          cartId,
+          deliveryAddress: {
+            address1: formData.address1,
+            address2: formData.address2 || '',
+            city: formData.city,
+            province: formData.province,
+            zip: formData.zip,
+            countryCode: formData.countryCode,
+            phone: formData.phone,
+          },
+        }),
+      });
 
       // チェックアウトURL取得
       const checkoutRes = await fetch('/api/cart/get', {
@@ -193,23 +210,6 @@ export default function ProductIntroClient() {
       setLoading(false);
     }
   };
-
-  await fetch('/api/cart/add-cart-address', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      cartId,
-      deliveryAddress: {
-        address1: formData.address1,
-        address2: formData.address2 || '',
-        city: formData.city,
-        province: formData.province,
-        zip: formData.zip,
-        countryCode: formData.countryCode,
-        phone: formData.phone,
-      },
-    }),
-  });
 
   if (!customerAccessToken) {
     return (
