@@ -36,7 +36,12 @@ export default function ProductIntroClient() {
   const [formData, setFormData] = useState({
     email: '',
     phone: '',
-    countryCode: 'JP'
+    countryCode: 'JP',
+    address1: '',
+    address2: '',
+    city: '',
+    province: '',
+    zip: ''
   });
 
   useEffect(() => {
@@ -188,17 +193,6 @@ export default function ProductIntroClient() {
       setLoading(false);
     }
   };
-
-  const [formData, setFormData] = useState({
-    email: '',
-    phone: '',
-    countryCode: 'JP',
-    address1: '',
-    address2: '',
-    city: '',
-    province: '',
-    zip: ''
-  });
 
   await fetch('/api/cart/add-cart-address', {
     method: 'POST',
