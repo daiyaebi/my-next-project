@@ -6,119 +6,92 @@ export async function POST(req: NextRequest) {
     const body = await req.json();
     console.log('Request body:', JSON.stringify(body));
 
-    const { cartId, buyerIdentity, deliveryAddress } = body;
+    const { cartId, deliveryAddress } = body;
 
-    if (
-      !buyerIdentity ||
-      (typeof buyerIdentity === 'object' &&
-        !buyerIdentity.email &&
-        !buyerIdentity.phone &&
-        !buyerIdentity.customerAccessToken)
-    ) {
-      return new Response(JSON.stringify({ error: 'buyerIdentity is required' }), { status: 400 });
+    if (!cartId || !deliveryAddress) {
+      return new Response(JSON.stringify({ error: 'cartId and deliveryAddress are required' }), {
+        status: 400,
+      });
     }
 
-    // Step 1: Update buyerIdentity (email, phone, customerAccessToken)
-    const buyerMutation = `
-      mutation updateCartBuyerIdentity($cartId: ID!, $buyerIdentity: CartBuyerIdentityInput!) {
-        cartBuyerIdentityUpdate(cartId: $cartId, buyerIdentity: $buyerIdentity) {
-          cart {
-            id
-          }
+    const mutation = `
+      mutation CartDeliveryAddressesAdd($id: ID!, $addresses: [CartSelectableAddressInput!]!) {
+        cartDeliveryAddressesAdd(cartId: $id, addresses: $addresses) {
           userErrors {
-            field
             message
+            code
+            field
           }
-        }
-      }
-    `;
-
-    const buyerVariables = {
-      cartId,
-      buyerIdentity: {
-        ...(buyerIdentity.email ? { email: buyerIdentity.email } : {}),
-        ...(buyerIdentity.phone ? { phone: buyerIdentity.phone } : {}),
-        ...(buyerIdentity.customerAccessToken
-          ? { customerAccessToken: buyerIdentity.customerAccessToken }
-          : {}),
-        countryCode: buyerIdentity.countryCode ?? 'JP',
-      },
-    };
-
-    const buyerResponse = await callShopifyCart(buyerMutation, buyerVariables);
-
-    if (
-      buyerResponse.errors ||
-      (buyerResponse.data?.cartBuyerIdentityUpdate?.userErrors.length ?? 0) > 0
-    ) {
-      return new Response(
-        JSON.stringify({
-          errors: buyerResponse.errors,
-          userErrors: buyerResponse.data?.cartBuyerIdentityUpdate?.userErrors,
-        }),
-        { status: 400 }
-      );
-    }
-
-    // Step 2: Add delivery address
-    const deliveryMutation = `
-      mutation cartDeliveryAddressesAdd($cartId: ID!, $addresses: [CartSelectableAddressInput!]!) {
-        cartDeliveryAddressesAdd(cartId: $cartId, addresses: $addresses) {
+          warnings {
+            message
+            code
+            target
+          }
           cart {
             id
-            deliveryGroups {
-              edges {
-                node {
-                  id
-                  selectedDeliveryOption {
-                    handle
+            delivery {
+              addresses {
+                id
+                selected
+                oneTimeUse
+                address {
+                  ... on CartDeliveryAddress {
+                    firstName
+                    lastName
+                    company
+                    address1
+                    address2
+                    city
+                    provinceCode
+                    zip
+                    countryCode
                   }
                 }
               }
             }
           }
-          userErrors {
-            field
-            message
-          }
         }
       }
     `;
 
-    const deliveryVariables = {
-      cartId,
+    const variables = {
+      id: cartId,
       addresses: [
         {
+          selected: true,
           address: {
+            deliveryAddress: {
               firstName: deliveryAddress.firstName ?? '',
               lastName: deliveryAddress.lastName ?? '',
+              company: deliveryAddress.company ?? '',
               address1: deliveryAddress.address1 ?? '',
+              address2: deliveryAddress.address2 ?? '',
               city: deliveryAddress.city ?? '',
-              province: deliveryAddress.province ?? '',
+              provinceCode: deliveryAddress.provinceCode ?? '',
               zip: deliveryAddress.zip ?? '',
-              country: deliveryAddress.countryCode ?? 'JP',
-              phone: deliveryAddress.phone ?? '',
-          }
+              countryCode: deliveryAddress.countryCode ?? 'JP',
+            },
+          },
         },
       ],
     };
 
-    const deliveryResponse = await callShopifyCart(deliveryMutation, deliveryVariables);
+    const response = await callShopifyCart(mutation, variables);
 
     if (
-      deliveryResponse.errors ||
-      (deliveryResponse.data?.cartDeliveryAddressesAdd?.userErrors.length ?? 0) > 0
+      response.errors ||
+      (response.data?.cartDeliveryAddressesAdd?.userErrors.length ?? 0) > 0
     ) {
       return new Response(
         JSON.stringify({
-          errors: deliveryResponse.errors,
-          userErrors: deliveryResponse.data?.cartDeliveryAddressesAdd?.userErrors,
+          errors: response.errors,
+          userErrors: response.data?.cartDeliveryAddressesAdd?.userErrors,
         }),
         { status: 400 }
       );
     }
 
-    return new Response(JSON.stringify(deliveryResponse.data.cartDeliveryAddressesAdd.cart), {
+    return new Response(JSON.stringify(response.data.cartDeliveryAddressesAdd.cart), {
       status: 200,
     });
   } catch (error) {
