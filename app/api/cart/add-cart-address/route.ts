@@ -9,16 +9,16 @@ export async function POST(req: NextRequest) {
     const { cartId, buyerIdentity, deliveryAddress } = body;
 
     if (
-        !buyerIdentity ||
-        (typeof buyerIdentity === 'object' &&
-          !buyerIdentity.email &&
-          !buyerIdentity.phone &&
-          !buyerIdentity.customerAccessToken)
-      ) {
-        return new Response(JSON.stringify({ error: 'buyerIdentity is required' }), { status: 400 });
+      !buyerIdentity ||
+      (typeof buyerIdentity === 'object' &&
+        !buyerIdentity.email &&
+        !buyerIdentity.phone &&
+        !buyerIdentity.customerAccessToken)
+    ) {
+      return new Response(JSON.stringify({ error: 'buyerIdentity is required' }), { status: 400 });
     }
 
-    // ✅ Step 1: Update buyerIdentity (email, phone, customerAccessToken)
+    // Step 1: Update buyerIdentity (email, phone, customerAccessToken)
     const buyerMutation = `
       mutation updateCartBuyerIdentity($cartId: ID!, $buyerIdentity: CartBuyerIdentityInput!) {
         cartBuyerIdentityUpdate(cartId: $cartId, buyerIdentity: $buyerIdentity) {
@@ -34,16 +34,16 @@ export async function POST(req: NextRequest) {
     `;
 
     const buyerVariables = {
-        cartId,
-        buyerIdentity: {
-          ...(buyerIdentity.email ? { email: buyerIdentity.email } : {}),
-          ...(buyerIdentity.phone ? { phone: buyerIdentity.phone } : {}),
-          ...(buyerIdentity.customerAccessToken
-            ? { customerAccessToken: buyerIdentity.customerAccessToken }
-            : {}),
-          countryCode: buyerIdentity.countryCode ?? 'JP',
-        },
-      };
+      cartId,
+      buyerIdentity: {
+        ...(buyerIdentity.email ? { email: buyerIdentity.email } : {}),
+        ...(buyerIdentity.phone ? { phone: buyerIdentity.phone } : {}),
+        ...(buyerIdentity.customerAccessToken
+          ? { customerAccessToken: buyerIdentity.customerAccessToken }
+          : {}),
+        countryCode: buyerIdentity.countryCode ?? 'JP',
+      },
+    };
 
     const buyerResponse = await callShopifyCart(buyerMutation, buyerVariables);
 
@@ -60,44 +60,46 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // ✅ Step 2: Add delivery address
+    // Step 2: Add delivery address
     const deliveryMutation = `
-    mutation cartDeliveryAddressesAdd($cartId: ID!, $addresses: [CartDeliveryAddressInput!]!) {
-      cartDeliveryAddressesAdd(cartId: $cartId, addresses: $addresses) {
-        cart {
-          id
-          deliveryGroups {
-            deliveryOptions {
-              handle
+      mutation cartDeliveryAddressesAdd($cartId: ID!, $addresses: [CartSelectableAddressInput!]!) {
+        cartDeliveryAddressesAdd(cartId: $cartId, addresses: $addresses) {
+          cart {
+            id
+            deliveryGroups {
+              edges {
+                node {
+                  id
+                  selectedDeliveryOption {
+                    handle
+                  }
+                }
+              }
             }
           }
-        }
-        userErrors {
-          field
-          message
+          userErrors {
+            field
+            message
+          }
         }
       }
-    }
-  `;
-  
-  const deliveryVariables = {
-    cartId,
-    addresses: [
-      {
-        address: {
+    `;
+
+    const deliveryVariables = {
+      cartId,
+      addresses: [
+        {
           firstName: deliveryAddress.firstName ?? '',
           lastName: deliveryAddress.lastName ?? '',
           address1: deliveryAddress.address1 ?? '',
           city: deliveryAddress.city ?? '',
           province: deliveryAddress.province ?? '',
           zip: deliveryAddress.zip ?? '',
-          country: 'JP',
+          country: deliveryAddress.countryCode ?? 'JP',
           phone: deliveryAddress.phone ?? '',
         },
-      },
-    ],
-  };
-  
+      ],
+    };
 
     const deliveryResponse = await callShopifyCart(deliveryMutation, deliveryVariables);
 
