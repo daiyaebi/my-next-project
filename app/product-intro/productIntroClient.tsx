@@ -189,6 +189,34 @@ export default function ProductIntroClient() {
     }
   };
 
+  const [formData, setFormData] = useState({
+    email: '',
+    phone: '',
+    countryCode: 'JP',
+    address1: '',
+    address2: '',
+    city: '',
+    province: '',
+    zip: ''
+  });
+
+  await fetch('/api/cart/add-cart-address', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      cartId,
+      deliveryAddress: {
+        address1: formData.address1,
+        address2: formData.address2 || '',
+        city: formData.city,
+        province: formData.province,
+        zip: formData.zip,
+        countryCode: formData.countryCode,
+        phone: formData.phone,
+      },
+    }),
+  });
+
   if (!customerAccessToken) {
     return (
       <main className={styles['product-detail']}>
@@ -234,22 +262,64 @@ export default function ProductIntroClient() {
        pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
        title="有効なメールアドレスを入力してください"
      />
-     
      <input
-    className={styles.input}
-    name="phone"
-    type="tel"
-    placeholder="90から始まる番号（例: 9012345678）"
-    value={formData.phone.replace(/^\+81/, '')}
-    onChange={(e) => {
-      const raw = e.target.value.replace(/\D/g, ''); // 数字のみ許容
-      setFormData({ ...formData, phone: `+81${raw}` });
-    }}
-    pattern="^\d{9,10}$"
-    title="90から始まる9〜10桁の電話番号を入力してください"
-    required
-  />
-
+       className={styles.input}
+       name="phone"
+       type="tel"
+       placeholder="90から始まる番号（例: 9012345678）"
+       value={formData.phone.replace(/^\+81/, '')}
+       onChange={(e) => {
+         const raw = e.target.value.replace(/\D/g, ''); // 数字のみ許容
+         setFormData({ ...formData, phone: `+81${raw}` });
+       }}
+       pattern="^\d{9,10}$"
+       title="90から始まる9〜10桁の電話番号を入力してください"
+       required
+     />
+     <input
+       className={styles.input}
+       name="address1"
+       type="text"
+       placeholder="住所1（例：東京都千代田区）"
+       value={formData.address1}
+       onChange={handleInputChange}
+       required
+     />
+     <input
+       className={styles.input}
+       name="address2"
+       type="text"
+       placeholder="住所2（建物名など）"
+       value={formData.address2}
+       onChange={handleInputChange}
+     />
+     <input
+       className={styles.input}
+       name="city"
+       type="text"
+       placeholder="市区町村（例：千代田区）"
+       value={formData.city}
+       onChange={handleInputChange}
+       required
+     />
+     <input
+       className={styles.input}
+       name="province"
+       type="text"
+       placeholder="都道府県（例：東京都）"
+       value={formData.province}
+       onChange={handleInputChange}
+       required
+     />
+     <input
+       className={styles.input}
+       name="zip"
+       type="text"
+       placeholder="郵便番号（例：1000001）"
+       value={formData.zip}
+       onChange={handleInputChange}
+       required
+     />
         <button type="submit" disabled={loading} className={styles['buy-button']}>
           {loading ? '処理中...' : '今すぐ購入'}
         </button>
