@@ -62,48 +62,42 @@ export async function POST(req: NextRequest) {
 
     // ✅ Step 2: Add delivery address
     const deliveryMutation = `
-      mutation cartDeliveryAddressesAdd($cartId: ID!, $deliveryAddresses: [CartDeliveryAddressInput!]!) {
-        cartDeliveryAddressesAdd(cartId: $cartId, deliveryAddresses: $deliveryAddresses) {
-          cart {
-            id
-            deliveryGroups {
-              deliveryAddress {
-                ... on MailingAddress {
-                  firstName
-                  lastName
-                  address1
-                  city
-                  province
-                  zip
-                  country
-                }
-              }
+    mutation cartDeliveryAddressesAdd($cartId: ID!, $addresses: [CartDeliveryAddressInput!]!) {
+      cartDeliveryAddressesAdd(cartId: $cartId, addresses: $addresses) {
+        cart {
+          id
+          deliveryGroups {
+            deliveryOptions {
+              handle
             }
           }
-          userErrors {
-            field
-            message
-          }
+        }
+        userErrors {
+          field
+          message
         }
       }
-    `;
-
-    const deliveryVariables = {
-      cartId,
-      deliveryAddresses: [
-        {
-          deliveryAddress: {
-            firstName: deliveryAddress.firstName ?? '',
-            lastName: deliveryAddress.lastName ?? '',
-            address1: deliveryAddress.address1 ?? '',
-            city: deliveryAddress.city ?? '',
-            province: deliveryAddress.province ?? '',
-            zip: deliveryAddress.zip ?? '',
-            country: 'JP',
-          },
+    }
+  `;
+  
+  const deliveryVariables = {
+    cartId,
+    addresses: [
+      {
+        address: {
+          firstName: deliveryAddress.firstName ?? '',
+          lastName: deliveryAddress.lastName ?? '',
+          address1: deliveryAddress.address1 ?? '',
+          city: deliveryAddress.city ?? '',
+          province: deliveryAddress.province ?? '',
+          zip: deliveryAddress.zip ?? '',
+          country: 'JP',
+          phone: deliveryAddress.phone ?? '',
         },
-      ],
-    };
+      },
+    ],
+  };
+  
 
     const deliveryResponse = await callShopifyCart(deliveryMutation, deliveryVariables);
 
