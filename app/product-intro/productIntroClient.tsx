@@ -204,7 +204,7 @@ export default function ProductIntroClient() {
 
       if (checkoutUrl) {
         console.log(checkoutUrl);
-        // window.location.href = checkoutUrl;
+        window.location.href = checkoutUrl;
       } else {
         throw new Error('チェックアウトURL取得失敗');
       }
