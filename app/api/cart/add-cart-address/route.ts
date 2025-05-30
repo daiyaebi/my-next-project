@@ -89,14 +89,16 @@ export async function POST(req: NextRequest) {
       cartId,
       addresses: [
         {
-          firstName: deliveryAddress.firstName ?? '',
-          lastName: deliveryAddress.lastName ?? '',
-          address1: deliveryAddress.address1 ?? '',
-          city: deliveryAddress.city ?? '',
-          province: deliveryAddress.province ?? '',
-          zip: deliveryAddress.zip ?? '',
-          country: deliveryAddress.countryCode ?? 'JP',
-          phone: deliveryAddress.phone ?? '',
+          address: {
+              firstName: deliveryAddress.firstName ?? '',
+              lastName: deliveryAddress.lastName ?? '',
+              address1: deliveryAddress.address1 ?? '',
+              city: deliveryAddress.city ?? '',
+              province: deliveryAddress.province ?? '',
+              zip: deliveryAddress.zip ?? '',
+              country: deliveryAddress.countryCode ?? 'JP',
+              phone: deliveryAddress.phone ?? '',
+          }
         },
       ],
     };
