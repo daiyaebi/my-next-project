@@ -199,7 +199,7 @@ export default function ProductIntroClient() {
 
       if (checkoutUrl) {
         console.log(checkoutUrl);
-        window.location.href = checkoutUrl;
+        // window.location.href = checkoutUrl;
       } else {
         throw new Error('チェックアウトURL取得失敗');
       }
@@ -253,7 +253,7 @@ export default function ProductIntroClient() {
        value={formData.email}
        onChange={handleInputChange}
        required
-       pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
+       pattern="^[a-zA-Z0-9._%+\\-]+@[a-zA-Z0-9.\\-]+\\.[a-zA-Z]{2,}$"
        title="有効なメールアドレスを入力してください"
      />
      <input
