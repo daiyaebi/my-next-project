@@ -220,18 +220,18 @@ export default function ProductIntroClient() {
     }
   };
 
-  if (!customerAccessToken) {
-    return (
-      <main className={styles['product-detail']}>
-        <form onSubmit={handleCustomerLogin} className={styles['buy-form']}>
-          <h2>ログインして購入</h2>
-          <input className={styles.input} name="email" type="email" placeholder="メールアドレス" value={loginForm.email} onChange={handleLoginInputChange} required />
-          <input className={styles.input} name="password" type="password" placeholder="パスワード" value={loginForm.password} onChange={handleLoginInputChange} required />
-          <button type="submit" className={styles['buy-button']}>ログイン</button>
-        </form>
-      </main>
-    );
-  }
+  // if (!customerAccessToken) {
+  //   return (
+  //     <main className={styles['product-detail']}>
+  //       <form onSubmit={handleCustomerLogin} className={styles['buy-form']}>
+  //         <h2>ログインして購入</h2>
+  //         <input className={styles.input} name="email" type="email" placeholder="メールアドレス" value={loginForm.email} onChange={handleLoginInputChange} required />
+  //         <input className={styles.input} name="password" type="password" placeholder="パスワード" value={loginForm.password} onChange={handleLoginInputChange} required />
+  //         <button type="submit" className={styles['buy-button']}>ログイン</button>
+  //       </form>
+  //     </main>
+  //   );
+  // }
 
   if (!product) {
     return (
