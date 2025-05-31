@@ -42,7 +42,7 @@ export default function ProductIntroClient() {
     address1: '',
     address2: '',
     city: '',
-    province: '',
+    provinceCode: '',
     zip: ''
   });
 
@@ -189,7 +189,7 @@ export default function ProductIntroClient() {
             address1: formData.address1,
             address2: formData.address2 || '',
             city: formData.city,
-            province: formData.province,
+            province: formData.provinceCode,
             zip: formData.zip,
             countryCode: formData.countryCode,
             phone: formData.phone,
@@ -299,9 +299,83 @@ export default function ProductIntroClient() {
      />
      <input
        className={styles.input}
+       name="zip"
+       type="text"
+       placeholder="郵便番号（例：1000001）"
+       value={formData.zip}
+       onChange={handleInputChange}
+       required
+     />
+　　　<select
+　　　  className={styles.input}
+　　　  name="provinceCode"
+　　　  value={formData.provinceCode}
+　　　  onChange={handleInputChange}
+　　　  required
+　　　>
+　　　  <option value="">都道府県を選択</option>
+　　　  <option value="01">北海道</option>
+　　　  <option value="02">青森県</option>
+　　　  <option value="03">岩手県</option>
+　　　  <option value="04">宮城県</option>
+　　　  <option value="05">秋田県</option>
+　　　  <option value="06">山形県</option>
+　　　  <option value="07">福島県</option>
+　　　  <option value="08">茨城県</option>
+　　　  <option value="09">栃木県</option>
+　　　  <option value="10">群馬県</option>
+　　　  <option value="11">埼玉県</option>
+　　　  <option value="12">千葉県</option>
+　　　  <option value="13">東京都</option>
+　　　  <option value="14">神奈川県</option>
+　　　  <option value="15">新潟県</option>
+　　　  <option value="16">富山県</option>
+　　　  <option value="17">石川県</option>
+　　　  <option value="18">福井県</option>
+　　　  <option value="19">山梨県</option>
+　　　  <option value="20">長野県</option>
+　　　  <option value="21">岐阜県</option>
+　　　  <option value="22">静岡県</option>
+　　　  <option value="23">愛知県</option>
+　　　  <option value="24">三重県</option>
+　　　  <option value="25">滋賀県</option>
+　　　  <option value="26">京都府</option>
+　　　  <option value="27">大阪府</option>
+　　　  <option value="28">兵庫県</option>
+　　　  <option value="29">奈良県</option>
+　　　  <option value="30">和歌山県</option>
+　　　  <option value="31">鳥取県</option>
+　　　  <option value="32">島根県</option>
+　　　  <option value="33">岡山県</option>
+　　　  <option value="34">広島県</option>
+　　　  <option value="35">山口県</option>
+　　　  <option value="36">徳島県</option>
+　　　  <option value="37">香川県</option>
+　　　  <option value="38">愛媛県</option>
+　　　  <option value="39">高知県</option>
+　　　  <option value="40">福岡県</option>
+　　　  <option value="41">佐賀県</option>
+　　　  <option value="42">長崎県</option>
+　　　  <option value="43">熊本県</option>
+　　　  <option value="44">大分県</option>
+　　　  <option value="45">宮崎県</option>
+　　　  <option value="46">鹿児島県</option>
+　　　  <option value="47">沖縄県</option>
+　　　</select>
+     <input
+       className={styles.input}
+       name="city"
+       type="text"
+       placeholder="市区町村（例：大田区）"
+       value={formData.city}
+       onChange={handleInputChange}
+       required
+     />
+     <input
+       className={styles.input}
        name="address1"
        type="text"
-       placeholder="住所1（例：東京都千代田区）"
+       placeholder="住所1（例：大森西3-11-00）"
        value={formData.address1}
        onChange={handleInputChange}
        required
@@ -313,33 +387,6 @@ export default function ProductIntroClient() {
        placeholder="住所2（建物名など）"
        value={formData.address2}
        onChange={handleInputChange}
-     />
-     <input
-       className={styles.input}
-       name="city"
-       type="text"
-       placeholder="市区町村（例：千代田区）"
-       value={formData.city}
-       onChange={handleInputChange}
-       required
-     />
-     <input
-       className={styles.input}
-       name="province"
-       type="text"
-       placeholder="都道府県（例：東京都）"
-       value={formData.province}
-       onChange={handleInputChange}
-       required
-     />
-     <input
-       className={styles.input}
-       name="zip"
-       type="text"
-       placeholder="郵便番号（例：1000001）"
-       value={formData.zip}
-       onChange={handleInputChange}
-       required
      />
         <button type="submit" disabled={loading} className={styles['buy-button']}>
           {loading ? '処理中...' : '今すぐ購入'}
