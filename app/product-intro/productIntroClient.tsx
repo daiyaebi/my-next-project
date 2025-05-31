@@ -37,6 +37,8 @@ export default function ProductIntroClient() {
     email: '',
     phone: '',
     countryCode: 'JP',
+    lastName: '',
+    firstName: '',
     address1: '',
     address2: '',
     city: '',
@@ -182,6 +184,8 @@ export default function ProductIntroClient() {
             customerAccessToken: customerAccessToken,
           },
           deliveryAddress: {
+            lastName: formData.lastName,
+            firstName: formData.firstName,
             address1: formData.address1,
             address2: formData.address2 || '',
             city: formData.city,
@@ -273,6 +277,24 @@ export default function ProductIntroClient() {
        }}
        pattern="^\d{9,10}$"
        title="90から始まる9〜10桁の電話番号を入力してください"
+       required
+     />
+     <input
+       className={styles.input}
+       name="lastName"
+       type="text"
+       placeholder="山田"
+       value={formData.lastName}
+       onChange={handleInputChange}
+       required
+     />
+     <input
+       className={styles.input}
+       name="firstName"
+       type="text"
+       placeholder="太郎"
+       value={formData.firstName}
+       onChange={handleInputChange}
        required
      />
      <input
