@@ -178,18 +178,13 @@ export default function ProductIntroClient() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           cartId,
-          buyerIdentity: {
-            email: formData.email,
-            phone: formData.phone,
-            customerAccessToken: customerAccessToken,
-          },
           deliveryAddress: {
             lastName: formData.lastName,
             firstName: formData.firstName,
             address1: formData.address1,
             address2: formData.address2 || '',
             city: formData.city,
-            province: formData.provinceCode,
+            provinceCode: formData.provinceCode,
             zip: formData.zip,
             countryCode: formData.countryCode,
             phone: formData.phone,
