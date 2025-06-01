@@ -260,7 +260,7 @@ export default function ProductIntroClient() {
        pattern="^[a-zA-Z0-9._%+\\-]+@[a-zA-Z0-9.\\-]+\\.[a-zA-Z]{2,}$"
        title="有効なメールアドレスを入力してください"
      />
-     <input
+     {/* <input
        className={styles.input}
        name="phone"
        type="tel"
@@ -273,7 +273,7 @@ export default function ProductIntroClient() {
        pattern="^\d{9,10}$"
        title="90から始まる9〜10桁の電話番号を入力してください"
        required
-     />
+     /> */}
      <input
        className={styles.input}
        name="lastName"
