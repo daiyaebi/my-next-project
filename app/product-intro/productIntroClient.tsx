@@ -35,7 +35,7 @@ export default function ProductIntroClient() {
 
   const [formData, setFormData] = useState({
     email: '',
-    phone: '',
+    // phone: '',
     countryCode: 'JP',
     lastName: '',
     firstName: '',
@@ -155,7 +155,7 @@ export default function ProductIntroClient() {
       // buyerIdentity の配送先はオブジェクト形式（配列ではない）
       const buyerIdentity: any = {
         email: formData.email,
-        phone: formData.phone
+        // phone: formData.phone
       };
 
       if (customerAccessToken) {
@@ -187,7 +187,7 @@ export default function ProductIntroClient() {
             provinceCode: formData.provinceCode,
             zip: formData.zip,
             countryCode: formData.countryCode,
-            phone: formData.phone,
+            // phone: formData.phone,
           },
         }),
       });
@@ -248,6 +248,7 @@ export default function ProductIntroClient() {
         </div>
       )}
       <p>価格: {variant.priceV2.amount} {variant.priceV2.currencyCode}</p>
+      <h1 className={styles['product-title']}>連絡先</h1>
       <form onSubmit={handleBuyNow} className={styles['buy-form']}>
       <input
        className={styles.input}
@@ -274,6 +275,7 @@ export default function ProductIntroClient() {
        title="90から始まる9〜10桁の電話番号を入力してください"
        required
      /> */}
+      <h1 className={styles['product-title']}>配送先住所</h1>
      <input
        className={styles.input}
        name="lastName"
