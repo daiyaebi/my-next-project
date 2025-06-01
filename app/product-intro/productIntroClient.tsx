@@ -306,63 +306,62 @@ export default function ProductIntroClient() {
        onChange={handleInputChange}
        required
      />
-<select
-  className={styles.input}
-  name="provinceCode"
-  value={formData.provinceCode}
-  onChange={handleInputChange}
-  required
->
-  <option value="">都道府県を選択</option>
-  <option value="01">北海道</option>
-  <option value="02">青森県</option>
-  <option value="03">岩手県</option>
-  <option value="04">宮城県</option>
-  <option value="05">秋田県</option>
-  <option value="06">山形県</option>
-  <option value="07">福島県</option>
-  <option value="08">茨城県</option>
-  <option value="09">栃木県</option>
-  <option value="10">群馬県</option>
-  <option value="11">埼玉県</option>
-  <option value="12">千葉県</option>
-  <option value="13">東京都</option>
-  <option value="14">神奈川県</option>
-  <option value="15">新潟県</option>
-  <option value="16">富山県</option>
-  <option value="17">石川県</option>
-  <option value="18">福井県</option>
-  <option value="19">山梨県</option>
-  <option value="20">長野県</option>
-  <option value="21">岐阜県</option>
-  <option value="22">静岡県</option>
-  <option value="23">愛知県</option>
-  <option value="24">三重県</option>
-  <option value="25">滋賀県</option>
-  <option value="26">京都府</option>
-  <option value="27">大阪府</option>
-  <option value="28">兵庫県</option>
-  <option value="29">奈良県</option>
-  <option value="30">和歌山県</option>
-  <option value="31">鳥取県</option>
-  <option value="32">島根県</option>
-  <option value="33">岡山県</option>
-  <option value="34">広島県</option>
-  <option value="35">山口県</option>
-  <option value="36">徳島県</option>
-  <option value="37">香川県</option>
-  <option value="38">愛媛県</option>
-  <option value="39">高知県</option>
-  <option value="40">福岡県</option>
-  <option value="41">佐賀県</option>
-  <option value="42">長崎県</option>
-  <option value="43">熊本県</option>
-  <option value="44">大分県</option>
-  <option value="45">宮崎県</option>
-  <option value="46">鹿児島県</option>
-  <option value="47">沖縄県</option>
-</select>
-
+　　　<select
+　　　  className={styles.input}
+　　　  name="provinceCode"
+　　　  value={formData.provinceCode}
+　　　  onChange={handleInputChange}
+　　　  required
+　　　>
+　　　  <option value="">都道府県を選択</option>
+　　　  <option value="JP-01">北海道</option>
+　　　  <option value="JP-02">青森県</option>
+　　　  <option value="JP-03">岩手県</option>
+　　　  <option value="JP-04">宮城県</option>
+　　　  <option value="JP-05">秋田県</option>
+　　　  <option value="JP-06">山形県</option>
+　　　  <option value="JP-07">福島県</option>
+　　　  <option value="JP-08">茨城県</option>
+　　　  <option value="JP-09">栃木県</option>
+　　　  <option value="JP-10">群馬県</option>
+　　　  <option value="JP-11">埼玉県</option>
+　　　  <option value="JP-12">千葉県</option>
+　　　  <option value="JP-13">東京都</option>
+　　　  <option value="JP-14">神奈川県</option>
+　　　  <option value="JP-15">新潟県</option>
+　　　  <option value="JP-16">富山県</option>
+　　　  <option value="JP-17">石川県</option>
+　　　  <option value="JP-18">福井県</option>
+　　　  <option value="JP-19">山梨県</option>
+　　　  <option value="JP-20">長野県</option>
+　　　  <option value="JP-21">岐阜県</option>
+　　　  <option value="JP-22">静岡県</option>
+　　　  <option value="JP-23">愛知県</option>
+　　　  <option value="JP-24">三重県</option>
+　　　  <option value="JP-25">滋賀県</option>
+　　　  <option value="JP-26">京都府</option>
+　　　  <option value="JP-27">大阪府</option>
+　　　  <option value="JP-28">兵庫県</option>
+　　　  <option value="JP-29">奈良県</option>
+　　　  <option value="JP-30">和歌山県</option>
+　　　  <option value="JP-31">鳥取県</option>
+　　　  <option value="JP-32">島根県</option>
+　　　  <option value="JP-33">岡山県</option>
+　　　  <option value="JP-34">広島県</option>
+　　　  <option value="JP-35">山口県</option>
+　　　  <option value="JP-36">徳島県</option>
+　　　  <option value="JP-37">香川県</option>
+　　　  <option value="JP-38">愛媛県</option>
+　　　  <option value="JP-39">高知県</option>
+　　　  <option value="JP-40">福岡県</option>
+　　　  <option value="JP-41">佐賀県</option>
+　　　  <option value="JP-42">長崎県</option>
+　　　  <option value="JP-43">熊本県</option>
+　　　  <option value="JP-44">大分県</option>
+　　　  <option value="JP-45">宮崎県</option>
+　　　  <option value="JP-46">鹿児島県</option>
+　　　  <option value="JP-47">沖縄県</option>
+　　　</select>
      <input
        className={styles.input}
        name="city"
