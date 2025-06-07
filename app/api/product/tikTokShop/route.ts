@@ -1,7 +1,7 @@
 // app/api/product/tikTokShop/route.ts
 
 import { NextRequest, NextResponse } from 'next/server';
-import { callTikTokShopAPI } from '../../../app/_libs/tikTokShop';
+import { callTikTokShopAPI } from '../../../_libs/tikTokShop';
 
 export async function GET(req: NextRequest) {
     try {
