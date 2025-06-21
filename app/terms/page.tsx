@@ -1,4 +1,3 @@
-import Image from 'next/image';
 import { getTermsDetail } from '@/app/_libs/microcms';
 import { MEMBER_LIST_LIMIT } from '../_constants/index';
 import styles from './page.module.css';
