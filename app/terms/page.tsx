@@ -10,8 +10,8 @@ export default async function Page() {
         <p className={styles.empty}>登録されていません。</p>
       ) : (
         <div>
-          {data.contents.map((term) => (
-              <div>{term.terms}</div>
+          {data.contents.map((item) => (
+              <div key={item.id}>{item.terms}</div>
           ))}
         </div>
       )}
