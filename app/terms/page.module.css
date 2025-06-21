@@ -53,24 +53,45 @@
   }
   
   .termsWrapper {
-    display: flex;
-    flex-direction: column;
-    gap: 24px;
     margin-top: 24px;
   }
   
   .termsBlock {
-    padding: 20px;
+    background: #fff;
+    padding: 24px;
     border: 1px solid #ccc;
     border-radius: 12px;
-    background-color: #fafafa;
+    max-width: 720px;
+    margin: auto;
+  }
+  
+  .title {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 8px;
+  }
+  
+  .lead {
+    margin-bottom: 16px;
     line-height: 1.6;
   }
   
-  .termsLine {
-    margin-bottom: 10px;
-    white-space: pre-wrap;
-    font-size: 16px;
+  .termsTable {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .termsTable th,
+  .termsTable td {
+    border: 1px solid #ddd;
+    padding: 12px;
+    vertical-align: top;
+  }
+  
+  .termsTable th {
+    width: 30%;
+    background: #f9f9f9;
+    font-weight: 600;
   }
   
 
