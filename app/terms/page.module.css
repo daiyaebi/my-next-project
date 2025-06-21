@@ -52,6 +52,28 @@
     margin-bottom: 40px;
   }
   
+  .termsWrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    margin-top: 24px;
+  }
+  
+  .termsBlock {
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 12px;
+    background-color: #fafafa;
+    line-height: 1.6;
+  }
+  
+  .termsLine {
+    margin-bottom: 10px;
+    white-space: pre-wrap;
+    font-size: 16px;
+  }
+  
+
   @media (max-width: 640px) {
     .text {
       text-align: left;
