@@ -1,121 +1,50 @@
-.text {
-    text-align: center;
-    margin-bottom: 40px;
-  }
-  
-  .list {
-    display: flex;
-    align-items: flex-start;
-    gap: 40px;
-    margin-bottom: 80px;
-  }
-  
-  .list:nth-child(even) {
-    flex-direction: row-reverse;
-  }
-  
-  .image {
-    width: 240px;
-    height: auto;
-    border-radius: var(--border-radius);
-  }
-  
-  .name {
-    font-size: 1.2rem;
-    font-weight: bold;
-  }
-  
-  .position {
-    margin-bottom: 8px;
-  }
-  
-  .profile {
-    font-size: 0.9rem;
-  }
-  
-  .footer {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    border-top: 1px solid var(--color-border);
-    padding-top: 40px;
-    text-align: center;
-    gap: 24px;
-  }
-  
-  .message {
-    font-size: 2rem;
-    font-weight: bold;
-  }
-  
-  .empty {
-    margin-bottom: 40px;
-  }
-  
-  .termsWrapper {
-    margin-top: 24px;
-  }
-  
-  .termsBlock {
-    background: #fff;
-    padding: 24px;
-    border: 1px solid #ccc;
-    border-radius: 12px;
-    max-width: 720px;
-    margin: auto;
-  }
-  
-  .title {
-    font-size: 20px;
-    font-weight: bold;
-    margin-bottom: 8px;
-  }
-  
-  .lead {
-    margin-bottom: 16px;
-    line-height: 1.6;
-  }
-  
-  .termsTable {
-    width: 100%;
-    border-collapse: collapse;
-  }
-  
-  .termsTable th,
-  .termsTable td {
-    border: 1px solid #ddd;
-    padding: 12px;
-    vertical-align: top;
-  }
-  
-  .termsTable th {
-    width: 30%;
-    background: #f9f9f9;
-    font-weight: 600;
-  }
-  
+.container {
+  padding: 24px;
+}
 
-  @media (max-width: 640px) {
-    .text {
-      text-align: left;
-    }
-  
-    .list {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 24px;
-    }
-  
-    .list:nth-child(even) {
-      flex-direction: column;
-    }
-  
-    .name {
-      text-align: center;
-    }
-  
-    .position {
-      text-align: center;
-    }
-  }
+.empty {
+  color: #888;
+  text-align: center;
+}
+
+.termsWrapper {
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+.termsContainer {
+  background-color: #fff;
+  padding: 24px;
+  border-radius: 8px;
+  box-shadow: 0 0 8px rgba(0,0,0,0.1);
+  margin-bottom: 32px;
+}
+
+.termsContainer h2 {
+  font-size: 1.8rem;
+  margin-bottom: 12px;
+}
+
+.termsContainer p {
+  line-height: 1.6;
+  margin-bottom: 24px;
+}
+
+.termsTable {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.termsTable th,
+.termsTable td {
+  border: 1px solid #ddd;
+  padding: 12px 16px;
+  vertical-align: top;
+  text-align: left;
+}
+
+.termsTable th {
+  background-color: #f8f8f8;
+  width: 35%;
+  font-weight: 600;
+}
