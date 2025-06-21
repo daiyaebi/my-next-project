@@ -12,7 +12,7 @@ export default async function Page() {
       ) : (
         <div>
           {data.contents.map((term) => (
-              <div><{term.terms}/div>
+              <div>{term.terms}</div>
           ))}
         </div>
       )}
