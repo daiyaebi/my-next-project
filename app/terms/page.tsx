@@ -30,17 +30,6 @@ export default async function Page() {
                     <td>請求があった場合には、遅滞なく開示いたします。</td>
                   </tr>
                   <tr>
-                    <th>電話番号</th>
-                    <td>
-                      請求があった場合には、遅滞なく開示いたします。<br />
-                      受付時間：10:00～18:00（土日祝を除く）
-                    </td>
-                  </tr>
-                  <tr>
-                    <th>メールアドレス</th>
-                    <td>contact@example.com（※実際の連絡先に変更してください）</td>
-                  </tr>
-                  <tr>
                     <th>運営統括責任者</th>
                     <td>蛯澤 大哉</td>
                   </tr>
