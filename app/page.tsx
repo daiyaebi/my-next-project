@@ -22,11 +22,27 @@ export default async function Home() {
         <Image className={styles.bgimg} src="/KnowledgeS_top.png" alt="" width={4000} height={1200} />
       </section>
       <section className={styles.news}>
-        <h2 className={styles.newsTitle}>News</h2>
+        <h2 className={styles.newsTitle}>記事</h2>
         <NewsList news={data.contents} />
         <div className={styles.newsLink}>
           <ButtonLink href="/news">もっと見る</ButtonLink>
         </div>
+        <div className={styles.newsTitle}>
+          <a 
+            href="https://note.com/e_daiya" 
+            target="_blank" 
+            rel="noopener noreferrer" 
+            className={styles.newsLink}
+          >
+            <img 
+              src="/note_image.png" 
+              alt="note投稿記事" 
+              style="border-radius:9999px"
+            />
+            <span>note投稿記事</span>
+          </a>
+        </div>
+
       </section>
     </>
     );
