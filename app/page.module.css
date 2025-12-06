@@ -57,6 +57,10 @@
   bottom: -40px;
 }
 
+.noteImage{
+  border-radius: 9999px;
+}
+
 @media (max-width: 640px) {
   .top {
     padding: 120px 16px;

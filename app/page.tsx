@@ -37,7 +37,7 @@ export default async function Home() {
             <img 
               src="/note_image.png" 
               alt="note投稿記事" 
-              style="border-radius:9999px"
+              className={styles.noteImage}
             />
             <span>note投稿記事</span>
           </a>
