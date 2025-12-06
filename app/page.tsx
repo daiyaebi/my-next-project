@@ -27,22 +27,19 @@ export default async function Home() {
         <div className={styles.newsLink}>
           <ButtonLink href="/news">もっと見る</ButtonLink>
         </div>
-        <div className={styles.newsTitle}>
-          <a 
-            href="https://note.com/e_daiya" 
-            target="_blank" 
-            rel="noopener noreferrer" 
-            className={styles.newsLink}
-          >
-            <img 
-              src="/note_image.png" 
-              alt="note投稿記事" 
-              className={styles.noteImage}
-            />
-            <span>note投稿記事</span>
-          </a>
-        </div>
-
+        <a 
+          href="https://note.com/e_daiya" 
+          target="_blank" 
+          rel="noopener noreferrer" 
+          className={styles.newsLink}
+        >
+          <img 
+            src="/note_image.png" 
+            alt="note投稿記事" 
+            className={styles.noteImage}
+          />
+          <span>noteにも記事を投稿してます！</span>
+        </a>
       </section>
     </>
     );

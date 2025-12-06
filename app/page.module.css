@@ -59,6 +59,7 @@
 
 .noteImage{
   border-radius: 9999px;
+  height: 50px;
 }
 
 @media (max-width: 640px) {
