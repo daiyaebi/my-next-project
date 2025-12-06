@@ -31,7 +31,6 @@ export default async function Home() {
           href="https://note.com/e_daiya" 
           target="_blank" 
           rel="noopener noreferrer"
-          className={styles.noteLink}
         >
           <img 
             src="/note_image.png" 
