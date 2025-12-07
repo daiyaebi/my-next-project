@@ -2,6 +2,8 @@ import Image from 'next/image';
 import { getMembersList } from '@/app/_libs/microcms';
 import { MEMBER_LIST_LIMIT } from '../_constants/index';
 import styles from './page.module.css';
+import mainStyles from "../page.module.css";
+
 
 export default async function Page() {
   const data = await getMembersList({ limit: MEMBER_LIST_LIMIT });
@@ -30,6 +32,18 @@ export default async function Page() {
           ))}
         </ul>
       )}
+      <a 
+        href="https://note.com/e_daiya" 
+        target="_blank" 
+        rel="noopener noreferrer"
+      >
+        <img 
+          src="/note_image.png" 
+          alt="note投稿記事" 
+          className={mainStyles.noteImage}
+        />
+        <span>noteにも記事を投稿してます！</span>
+      </a>
     </div>
   );
 }
