@@ -3,7 +3,7 @@ import NewsList from "../_components/NewsList/index";
 import Pagination from "../_components/Pagination/index";
 import SearchField from "../_components/SearchField/index";
 import { NEWS_LIST_LIMIT } from "../_constants/index";
-import styles from "./page.module.css";
+import styles from "../page.module.css";
 
 
 export default async function Page(){
