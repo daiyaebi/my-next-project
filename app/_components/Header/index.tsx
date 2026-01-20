@@ -8,8 +8,8 @@ export default function Header() {
     <header className={styles.header}>
        <Link href='/' className={styles.logoLink}>
             <Image
-              src="/knowledgeS-logo.png"
-              alt="knowledgeS"
+              src="/NLDE-logo.png"
+              alt="NLDE-logo"
               className={styles.logo}
               width={348}
               height={133}
