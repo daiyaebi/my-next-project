@@ -15,9 +15,9 @@ export default function Footer() {
           <li className={styles.item}>
             <Link href="/contact">Contact</Link>
           </li>
-          <li className={styles.item}>
+          {/* <li className={styles.item}>
             <Link href="/terms">特商法表記</Link>
-          </li>
+          </li> */}
         </ul>
       </nav>
       <p className={styles.cr}>© Knowledge S. All Rights Reserved 2025</p>
