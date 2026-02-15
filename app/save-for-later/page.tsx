@@ -13,7 +13,7 @@ export default function Page() {
                     <div className={styles.featureItem}>
                         <h3 className={styles.featureTitle}>Easy to Save</h3>
                         <p className={styles.featureDescription}>
-                            Simply click the "Save for Later" button on the product page to add items to your list.
+                            Simply click the &quot;Save for Later&quot; button on the product page to add items to your list.
                             You can save items temporarily without logging in, and merge them after logging in.
                         </p>
                     </div>
@@ -37,7 +37,7 @@ export default function Page() {
             <section className={styles.ctaSection}>
                 <h2 className={styles.sectionTitle}>Experience It Now</h2>
                 <p className={styles.featureDescription} style={{ marginBottom: '30px' }}>
-                    Use the NLDE "Save For Later" feature for a more convenient shopping experience.
+                    Use the NLDE &quot;Save For Later&quot; feature for a more convenient shopping experience.
                 </p>
                 <Link href="/" className={styles.ctaButton}>
                     Back to Top

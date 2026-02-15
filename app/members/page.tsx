@@ -32,15 +32,17 @@ export default async function Page() {
           ))}
         </ul>
       )}
-      <a 
-        href="https://note.com/e_daiya" 
-        target="_blank" 
+      <a
+        href="https://note.com/e_daiya"
+        target="_blank"
         rel="noopener noreferrer"
       >
-        <img 
-          src="/note_image.png" 
-          alt="note投稿記事" 
+        <Image
+          src="/note_image.png"
+          alt="note投稿記事"
           className={mainStyles.noteImage}
+          width={50}
+          height={50}
         />
         <span>noteにも記事を投稿してます！</span>
       </a>
